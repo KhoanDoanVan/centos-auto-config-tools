@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+readonly APP_BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly APP_ROOT="$(cd "$APP_BIN_DIR/.." && pwd)"
+export APP_ROOT
+
+# shellcheck source=../src/core/bootstrap.sh
+source "$APP_ROOT/src/core/bootstrap.sh"
+app_bootstrap
+app_dispatch "$@"

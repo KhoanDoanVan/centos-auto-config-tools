@@ -1,0 +1,7 @@
+# Sao chép thành config/netadmin.conf để thay đổi mặc định.
+# NETADMIN_BACKUP_DIR=/var/backups/netadmin
+# DHCP_CONFIG=/etc/dhcp/dhcpd.conf
+# DNS_CONFIG=/etc/named.conf
+# DNS_ZONE_DIR=/var/named
+# SAMBA_CONFIG=/etc/samba/smb.conf
+# NETADMIN_DRY_RUN=0
