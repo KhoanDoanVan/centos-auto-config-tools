@@ -16,6 +16,7 @@ Thư mục này có hai tầng tài liệu:
 5. [Storage, LVM và quota từ cơ bản](handbook/04-STORAGE-LVM-QUOTA-TU-CO-BAN.md)
 6. [Samba/SMB từ cơ bản đến từng command](handbook/05-SAMBA-TU-CO-BAN.md)
 7. [Từ điển từng công cụ Linux bên dưới](handbook/06-TU-DIEN-CONG-CU-LINUX.md)
+8. [Runbook kiểm thử thực tế trên CentOS](handbook/07-RUNBOOK-KIEM-THU-TREN-CENTOS.md)
 
 ## Tra nhanh từng nhóm tool
 
@@ -40,6 +41,7 @@ Thư mục này có hai tầng tài liệu:
 | `awk`, `grep`, `systemctl`, `firewall-cmd`, SELinux tools | [Từ điển công cụ](handbook/06-TU-DIEN-CONG-CU-LINUX.md) |
 | `dhcpd`, `omshell`, `named`, `dig`, `nmcli` | [Từ điển công cụ](handbook/06-TU-DIEN-CONG-CU-LINUX.md) |
 | `parted`, `mkfs`, LVM, quota, Samba/CIFS commands | [Từ điển công cụ](handbook/06-TU-DIEN-CONG-CU-LINUX.md) |
+| Quy trình test đầy đủ trên 2 VM CentOS | [Runbook kiểm thử CentOS](handbook/07-RUNBOOK-KIEM-THU-TREN-CENTOS.md) |
 
 ## Tài liệu tham chiếu
 

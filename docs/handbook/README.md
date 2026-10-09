@@ -4,10 +4,11 @@ Bộ công cụ Bash tự động hóa các bài thực hành Quản trị mạn
 
 Tài liệu đầy đủ:
 
-- [Giáo trình chi tiết cho người bắt đầu từ số 0](docs/README.md)
-- [Tham chiếu tất cả CLI và ví dụ](docs/CLI_REFERENCE.md)
-- [Package, command hệ thống và file liên quan](docs/SYSTEM_TOOLS.md)
-- [Mục lục tài liệu](docs/README.md)
+- [Giáo trình chi tiết cho người bắt đầu từ số 0](../README.md)
+- [Runbook kiểm thử thực tế trên CentOS](07-RUNBOOK-KIEM-THU-TREN-CENTOS.md)
+- [Tham chiếu tất cả CLI và ví dụ](../CLI_REFERENCE.md)
+- [Package, command hệ thống và file liên quan](../SYSTEM_TOOLS.md)
+- [Mục lục tài liệu](../README.md)
 
 ## Phạm vi tính năng
 
