@@ -17,6 +17,7 @@ Thư mục này có hai tầng tài liệu:
 6. [Samba/SMB từ cơ bản đến từng command](handbook/05-SAMBA-TU-CO-BAN.md)
 7. [Từ điển từng công cụ Linux bên dưới](handbook/06-TU-DIEN-CONG-CU-LINUX.md)
 8. [Runbook kiểm thử thực tế trên CentOS](handbook/07-RUNBOOK-KIEM-THU-TREN-CENTOS.md)
+9. [Thiết lập hai card mạng trên VMware Fusion](handbook/08-VMWARE-FUSION-SETUP-HAI-CARD-MANG.md)
 
 ## Tra nhanh từng nhóm tool
 
@@ -42,11 +43,13 @@ Thư mục này có hai tầng tài liệu:
 | `dhcpd`, `omshell`, `named`, `dig`, `nmcli` | [Từ điển công cụ](handbook/06-TU-DIEN-CONG-CU-LINUX.md) |
 | `parted`, `mkfs`, LVM, quota, Samba/CIFS commands | [Từ điển công cụ](handbook/06-TU-DIEN-CONG-CU-LINUX.md) |
 | Quy trình test đầy đủ trên 2 VM CentOS | [Runbook kiểm thử CentOS](handbook/07-RUNBOOK-KIEM-THU-TREN-CENTOS.md) |
+| VMware Fusion, hai NIC và lỗi NetworkManager | [Thiết lập VMware Fusion](handbook/08-VMWARE-FUSION-SETUP-HAI-CARD-MANG.md) |
 
 ## Tài liệu tham chiếu
 
 | Tài liệu | Nội dung |
 |---|---|
+| [TOOLS-LIST.md](TOOLS-LIST.md) | Danh sách gọn toàn bộ command và system tool, mỗi tool một dòng |
 | [CLI_REFERENCE.md](CLI_REFERENCE.md) | Tất cả command, tham số, kết quả và ví dụ |
 | [SYSTEM_TOOLS.md](SYSTEM_TOOLS.md) | Package, command hệ thống, service và file cấu hình được sử dụng |
 

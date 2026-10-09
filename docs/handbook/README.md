@@ -6,6 +6,8 @@ Tài liệu đầy đủ:
 
 - [Giáo trình chi tiết cho người bắt đầu từ số 0](../README.md)
 - [Runbook kiểm thử thực tế trên CentOS](07-RUNBOOK-KIEM-THU-TREN-CENTOS.md)
+- [Thiết lập hai card mạng trên VMware Fusion](08-VMWARE-FUSION-SETUP-HAI-CARD-MANG.md)
+- [Danh sách gọn toàn bộ tools](../TOOLS-LIST.md)
 - [Tham chiếu tất cả CLI và ví dụ](../CLI_REFERENCE.md)
 - [Package, command hệ thống và file liên quan](../SYSTEM_TOOLS.md)
 - [Mục lục tài liệu](../README.md)
