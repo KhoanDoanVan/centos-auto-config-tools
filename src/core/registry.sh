@@ -8,6 +8,7 @@ dispatch_command() {
     dns) dns_command "$@" ;;
     storage) storage_command "$@" ;;
     samba) samba_command "$@" ;;
+    ui) ui_command "$@" ;;
     *) print_root_help; die "Command không tồn tại: $command" ;;
   esac
 }
@@ -26,6 +27,7 @@ Modules:
   dns       Network, BIND zones/records, secondary và forwarding
   storage   Disk, filesystem, LVM và quota
   samba     Samba shares, users, client và vận hành dịch vụ
+  ui        Cài đặt và quản lý giao diện Cockpit
 
 Biến môi trường:
   NETADMIN_DRY_RUN=1       In lệnh thay vì thực thi

@@ -16,7 +16,7 @@ app_bootstrap() {
   : "${NETADMIN_DRY_RUN:=0}"
 
   local module
-  for module in doctor dhcp dns storage samba; do
+  for module in doctor dhcp dns storage samba ui; do
     # shellcheck source=/dev/null
     source "$APP_ROOT/src/features/$module/module.sh"
   done

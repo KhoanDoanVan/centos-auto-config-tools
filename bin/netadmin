@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-readonly APP_BIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APP_SOURCE="${BASH_SOURCE[0]}"
+while [[ -L "$APP_SOURCE" ]]; do
+  APP_SOURCE_DIR="$(cd "$(dirname "$APP_SOURCE")" && pwd)"
+  APP_SOURCE="$(readlink "$APP_SOURCE")"
+  [[ "$APP_SOURCE" == /* ]] || APP_SOURCE="$APP_SOURCE_DIR/$APP_SOURCE"
+done
+readonly APP_BIN_DIR="$(cd "$(dirname "$APP_SOURCE")" && pwd)"
 readonly APP_ROOT="$(cd "$APP_BIN_DIR/.." && pwd)"
 export APP_ROOT
+unset APP_SOURCE APP_SOURCE_DIR
 
 # shellcheck source=../src/core/bootstrap.sh
 source "$APP_ROOT/src/core/bootstrap.sh"

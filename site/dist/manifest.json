@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "tools": {
+    "netadmin": {
+      "label": "NetAdmin Tools",
+      "path": "index.html"
+    }
+  }
+}

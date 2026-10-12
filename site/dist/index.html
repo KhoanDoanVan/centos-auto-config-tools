@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Giao diện quản lý và chạy NetAdmin tools.">
+  <title>NetAdmin Tools Manager</title>
+  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="cockpit.css?v=5">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#"><span>N</span><strong>NetAdmin</strong></a>
+    <p class="nav-label">MODULES</p>
+    <nav id="moduleNav">
+      <button class="nav-item active" data-module="all"><span>⌘</span>Tất cả tools <b>42</b></button>
+      <button class="nav-item" data-module="doctor"><span>✓</span>Doctor <b>1</b></button>
+      <button class="nav-item" data-module="dns"><span>Aa</span>DNS <b>18</b></button>
+      <button class="nav-item" data-module="dhcp"><span>↦</span>DHCP <b>12</b></button>
+      <button class="nav-item" data-module="samba"><span>⇄</span>Samba <b>16</b></button>
+      <button class="nav-item" data-module="storage"><span>▰</span>Storage <b>14</b></button>
+    </nav>
+    <div class="server-card"><div><i id="runtimeDot"></i><span id="runtimeHost">Đang kiểm tra…</span></div><small id="runtimeStatus">Cockpit runtime</small></div>
+  </aside>
+  <main>
+    <header class="topbar">
+      <button class="mobile-menu" aria-label="Mở menu">☰</button>
+      <div><h1>Tools Manager</h1><p>Chọn, cấu hình và chạy các NetAdmin tools.</p></div>
+      <div class="top-actions">
+        <label class="dry-run"><span><b>Dry run</b><small>Chỉ xem lệnh, không thay đổi máy</small></span><input id="dryRun" type="checkbox" checked><i></i></label>
+        <button class="icon-btn" id="historyBtn" title="Lệnh vừa chạy">↻</button>
+      </div>
+    </header>
+    <section class="workspace">
+      <div class="catalog">
+        <div class="catalog-bar"><label class="search"><span>⌕</span><input id="search" placeholder="Tìm tool hoặc lệnh…"><kbd>⌘ K</kbd></label><span id="resultCount">42 tools</span></div>
+        <div class="module-head"><div><p id="moduleName">TẤT CẢ MODULES</p><h2 id="moduleTitle">Chọn một tool để bắt đầu</h2></div><select id="actionFilter"><option value="all">Tất cả thao tác</option><option value="setup">Cài đặt & cấu hình</option><option value="manage">Quản lý</option><option value="check">Kiểm tra</option><option value="service">Dịch vụ</option></select></div>
+        <div class="tool-list" id="toolList"></div>
+      </div>
+      <aside class="runner" id="runner">
+        <div class="runner-empty" id="runnerEmpty"><div>⌘</div><h2>Chưa chọn tool</h2><p>Chọn một tool bên trái để nhập tham số và xem lệnh Bash.</p></div>
+        <div class="runner-content is-hidden" id="runnerContent">
+          <div class="runner-head"><div><span class="module-badge" id="runnerModule">DNS</span><h2 id="runnerName"></h2><p id="runnerDesc"></p></div><button id="closeRunner">×</button></div>
+          <form id="toolForm"><div id="fields"></div></form>
+          <section class="preview"><header><span>LỆNH BASH</span><button id="copyBtn" type="button">Sao chép</button></header><code id="commandPreview"></code></section>
+          <div class="safety" id="safety"><span>✓</span><p><b>Chế độ Dry run đang bật</b><small>Lệnh chỉ được in ra, chưa thay đổi hệ thống.</small></p></div>
+          <button class="run-btn" id="runBtn"><span>▶</span> Chạy tool</button>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <dialog id="outputDialog"><div class="dialog-head"><div><span>OUTPUT</span><h2>Kết quả thực thi</h2></div><button id="closeOutput">×</button></div><div class="terminal" id="terminal"></div><footer><span id="exitStatus">Đang chờ</span><button id="doneBtn">Đóng</button></footer></dialog>
+  <dialog id="historyDialog"><div class="dialog-head"><div><span>RECENT COMMANDS</span><h2>Lệnh vừa chạy</h2></div><button id="closeHistory">×</button></div><div class="history-list" id="historyList"><p>Chưa có lệnh nào trong phiên này.</p></div></dialog>
+  <div class="toast" id="toast">Đã sao chép lệnh</div>
+  <script src="../base1/cockpit.js"></script>
+  <script src="app.js?v=5"></script>
+</body>
+</html>

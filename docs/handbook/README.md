@@ -1,12 +1,14 @@
 # NetAdmin Toolkit
 
-Bộ công cụ Bash tự động hóa các bài thực hành Quản trị mạng trên CentOS/RHEL. Dự án hiện tập trung vào tool và nghiệp vụ; không có giao diện đồ họa hoặc test suite theo đúng phạm vi hiện tại.
+Bộ công cụ Bash tự động hóa các bài thực hành Quản trị mạng trên CentOS/RHEL, kèm giao diện Cockpit để tìm, cấu hình và thực thi tool trực tiếp trên máy chủ.
 
 Tài liệu đầy đủ:
 
 - [Giáo trình chi tiết cho người bắt đầu từ số 0](../README.md)
 - [Runbook kiểm thử thực tế trên CentOS](07-RUNBOOK-KIEM-THU-TREN-CENTOS.md)
 - [Thiết lập hai card mạng trên VMware Fusion](08-VMWARE-FUSION-SETUP-HAI-CARD-MANG.md)
+- [Cài đặt và kiểm thử Cockpit UI](09-COCKPIT-UI.md)
+- [Setup và chạy giao diện từng bước](../SETUP-VA-CHAY-GIAO-DIEN.md)
 - [Danh sách gọn toàn bộ tools](../TOOLS-LIST.md)
 - [Tham chiếu tất cả CLI và ví dụ](../CLI_REFERENCE.md)
 - [Package, command hệ thống và file liên quan](../SYSTEM_TOOLS.md)
@@ -36,7 +38,8 @@ src/features/
 ├── dns/                        # cùng quy ước
 ├── storage/
 ├── samba/
-└── doctor/
+├── doctor/
+└── ui/                         # cài đặt và quản lý Cockpit package
 ```
 
 Mỗi feature là một bounded context độc lập. `module.sh` chỉ dispatch command; nghiệp vụ nằm trong `commands/`; tương tác với file/service native nằm trong `infra/`. Core không phụ thuộc ngược vào feature. Khi thêm sub-tool, tạo file command mới và source nó từ `module.sh`, không cần sửa các feature khác.
@@ -58,6 +61,7 @@ sudo ./bin/netadmin doctor
 sudo ./bin/netadmin dhcp install
 sudo ./bin/netadmin dns install
 sudo ./bin/netadmin samba install
+sudo ./bin/netadmin ui install
 ```
 
 Có thể tạo cấu hình riêng:
