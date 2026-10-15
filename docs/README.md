@@ -19,6 +19,7 @@ Thư mục này có hai tầng tài liệu:
 8. [Runbook kiểm thử thực tế trên CentOS](handbook/07-RUNBOOK-KIEM-THU-TREN-CENTOS.md)
 9. [Thiết lập hai card mạng trên VMware Fusion](handbook/08-VMWARE-FUSION-SETUP-HAI-CARD-MANG.md)
 10. [Setup và chạy giao diện NetAdmin trên CentOS](SETUP-VA-CHAY-GIAO-DIEN.md)
+11. [Quick start Cockpit UI](QUICKSTART-COCKPIT-UI.md)
 
 ## Tra nhanh từng nhóm tool
 
@@ -46,6 +47,7 @@ Thư mục này có hai tầng tài liệu:
 | Quy trình test đầy đủ trên 2 VM CentOS | [Runbook kiểm thử CentOS](handbook/07-RUNBOOK-KIEM-THU-TREN-CENTOS.md) |
 | VMware Fusion, hai NIC và lỗi NetworkManager | [Thiết lập VMware Fusion](handbook/08-VMWARE-FUSION-SETUP-HAI-CARD-MANG.md) |
 | Cài, mở và xử lý lỗi giao diện Cockpit | [Setup và chạy giao diện](SETUP-VA-CHAY-GIAO-DIEN.md) |
+| Chạy nhanh giao diện Cockpit lần đầu | [Quick start Cockpit UI](QUICKSTART-COCKPIT-UI.md) |
 
 ## Tài liệu tham chiếu
 
@@ -55,6 +57,7 @@ Thư mục này có hai tầng tài liệu:
 | [CLI_REFERENCE.md](CLI_REFERENCE.md) | Tất cả command, tham số, kết quả và ví dụ |
 | [SYSTEM_TOOLS.md](SYSTEM_TOOLS.md) | Package, command hệ thống, service và file cấu hình được sử dụng |
 | [SETUP-VA-CHAY-GIAO-DIEN.md](SETUP-VA-CHAY-GIAO-DIEN.md) | Hướng dẫn copy-paste để cài và chạy giao diện Cockpit trên CentOS |
+| [QUICKSTART-COCKPIT-UI.md](QUICKSTART-COCKPIT-UI.md) | Hướng dẫn ngắn để cài, mở và chạy tool thật từ giao diện |
 
 Đọc nhanh:
 

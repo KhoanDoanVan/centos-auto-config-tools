@@ -9,6 +9,7 @@ Tài liệu đầy đủ:
 - [Thiết lập hai card mạng trên VMware Fusion](08-VMWARE-FUSION-SETUP-HAI-CARD-MANG.md)
 - [Cài đặt và kiểm thử Cockpit UI](09-COCKPIT-UI.md)
 - [Setup và chạy giao diện từng bước](../SETUP-VA-CHAY-GIAO-DIEN.md)
+- [Quick start Cockpit UI](../QUICKSTART-COCKPIT-UI.md)
 - [Danh sách gọn toàn bộ tools](../TOOLS-LIST.md)
 - [Tham chiếu tất cả CLI và ví dụ](../CLI_REFERENCE.md)
 - [Package, command hệ thống và file liên quan](../SYSTEM_TOOLS.md)
