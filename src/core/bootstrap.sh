@@ -16,7 +16,7 @@ app_bootstrap() {
   : "${NETADMIN_DRY_RUN:=0}"
 
   local module
-  for module in doctor dhcp dns storage samba ui; do
+  for module in doctor dhcp dns storage samba web ftp mail ui; do
     # shellcheck source=/dev/null
     source "$APP_ROOT/src/features/$module/module.sh"
   done
@@ -28,7 +28,7 @@ app_dispatch() {
   shift || true
   case "$command" in
     help|-h|--help) print_root_help ;;
-    version|--version) printf '%s\n' 'netadmin 1.0.0' ;;
+    version|--version) printf '%s\n' 'netadmin 1.2.0' ;;
     *) dispatch_command "$command" "$@" ;;
   esac
 }

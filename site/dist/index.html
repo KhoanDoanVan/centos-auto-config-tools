@@ -4,20 +4,23 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Giao diện quản lý và chạy NetAdmin tools.">
   <title>NetAdmin Tools Manager</title>
-  <link rel="stylesheet" href="styles.css?v=5">
-  <link rel="stylesheet" href="cockpit.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="cockpit.css?v=6">
 </head>
 <body>
   <aside class="sidebar">
     <a class="brand" href="#"><span>N</span><strong>NetAdmin</strong></a>
     <p class="nav-label">MODULES</p>
     <nav id="moduleNav">
-      <button class="nav-item active" data-module="all"><span>⌘</span>Tất cả tools <b>42</b></button>
+      <button class="nav-item active" data-module="all"><span>⌘</span>Tất cả tools <b>123</b></button>
       <button class="nav-item" data-module="doctor"><span>✓</span>Doctor <b>1</b></button>
-      <button class="nav-item" data-module="dns"><span>Aa</span>DNS <b>18</b></button>
-      <button class="nav-item" data-module="dhcp"><span>↦</span>DHCP <b>12</b></button>
-      <button class="nav-item" data-module="samba"><span>⇄</span>Samba <b>16</b></button>
-      <button class="nav-item" data-module="storage"><span>▰</span>Storage <b>14</b></button>
+      <button class="nav-item" data-module="dns"><span>Aa</span>DNS <b>20</b></button>
+      <button class="nav-item" data-module="dhcp"><span>↦</span>DHCP <b>14</b></button>
+      <button class="nav-item" data-module="samba"><span>⇄</span>Samba <b>18</b></button>
+      <button class="nav-item" data-module="web"><span>W</span>Web <b>12</b></button>
+      <button class="nav-item" data-module="ftp"><span>F</span>FTP <b>13</b></button>
+      <button class="nav-item" data-module="mail"><span>M</span>Mail <b>12</b></button>
+      <button class="nav-item" data-module="storage"><span>▰</span>Storage <b>16</b></button>
     </nav>
     <div class="server-card"><div><i id="runtimeDot"></i><span id="runtimeHost">Đang kiểm tra…</span></div><small id="runtimeStatus">Cockpit runtime</small></div>
   </aside>
@@ -32,7 +35,7 @@
     </header>
     <section class="workspace">
       <div class="catalog">
-        <div class="catalog-bar"><label class="search"><span>⌕</span><input id="search" placeholder="Tìm tool hoặc lệnh…"><kbd>⌘ K</kbd></label><span id="resultCount">42 tools</span></div>
+        <div class="catalog-bar"><label class="search"><span>⌕</span><input id="search" placeholder="Tìm tool hoặc lệnh…"><kbd>⌘ K</kbd></label><span id="resultCount">123 tools</span></div>
         <div class="module-head"><div><p id="moduleName">TẤT CẢ MODULES</p><h2 id="moduleTitle">Chọn một tool để bắt đầu</h2></div><select id="actionFilter"><option value="all">Tất cả thao tác</option><option value="setup">Cài đặt & cấu hình</option><option value="manage">Quản lý</option><option value="check">Kiểm tra</option><option value="service">Dịch vụ</option></select></div>
         <div class="tool-list" id="toolList"></div>
       </div>
@@ -52,6 +55,6 @@
   <dialog id="historyDialog"><div class="dialog-head"><div><span>RECENT COMMANDS</span><h2>Lệnh vừa chạy</h2></div><button id="closeHistory">×</button></div><div class="history-list" id="historyList"><p>Chưa có lệnh nào trong phiên này.</p></div></dialog>
   <div class="toast" id="toast">Đã sao chép lệnh</div>
   <script src="../base1/cockpit.js"></script>
-  <script src="app.js?v=5"></script>
+  <script src="app.js?v=7"></script>
 </body>
 </html>

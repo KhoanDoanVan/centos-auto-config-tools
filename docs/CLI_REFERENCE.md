@@ -47,6 +47,15 @@ alias netadmin="$PWD/bin/netadmin"
 | `DNS_MANAGED_CONFIG` | `/etc/named/netadmin-zones.conf` | Fragment zone do toolkit quản lý |
 | `DNS_ZONE_DIR` | `/var/named` | Thư mục zone file |
 | `SAMBA_CONFIG` | `/etc/samba/smb.conf` | File cấu hình Samba |
+| `WEB_CONFIG_DIR` | `/etc/httpd/conf.d` | Thư mục Apache VirtualHost |
+| `WEB_LOG_DIR` | `/var/log/httpd` | Thư mục log Apache |
+| `WEB_SITE_BACKUP_DIR` | `/var/backups/netadmin/web-sites` | Website data archives |
+| `FTP_CONFIG` | `/etc/vsftpd/vsftpd.conf` | File cấu hình vsftpd |
+| `FTP_ROOT` | `/var/ftp` | Anonymous FTP root |
+| `FTP_SHARE_REGISTRY` | `/etc/netadmin/ftp-shares.tsv` | Danh sách FTP share do toolkit quản lý |
+| `MAIL_POSTFIX_CONFIG` | `/etc/postfix/main.cf` | Cấu hình Postfix |
+| `MAIL_DOVECOT_CONFIG` | `/etc/dovecot/conf.d/99-netadmin.conf` | Fragment Dovecot do toolkit quản lý |
+| `MAIL_MIN_UID` | `1000` | UID nhỏ nhất khi liệt kê mail user |
 
 `NETADMIN_ROOT` chỉ phù hợp khi chuẩn bị image hoặc rootfs. Các command service, package, disk, `nmcli`, user và mount vẫn tác động lên hệ thống đang chạy.
 
@@ -633,7 +642,114 @@ sudo ./bin/netadmin samba client copy \
 
 Tool mount CIFS vào thư mục tạm, hỏi password không echo nếu có username, sao chép bằng `cp -a`, unmount và xóa credential tạm. Cleanup cũng chạy khi command kết thúc bất thường.
 
-## 8. Backup, rollback và marker
+## 8. Web Server
+
+### 8.1 Cài và tạo website
+
+```bash
+sudo ./bin/netadmin web install
+sudo ./bin/netadmin web site add <domain> <document-root>
+```
+
+`install` cài Apache và mở HTTP. `site add` tạo DocumentRoot, trang mẫu nếu cần, VirtualHost riêng và chạy `apachectl configtest`. DNS record được quản lý độc lập bằng module `dns`. HTTPS chỉ nên mở sau khi đã cài certificate và cấu hình TLS.
+
+### 8.2 Quản lý website
+
+```bash
+./bin/netadmin web site list
+./bin/netadmin web site show <domain>
+sudo ./bin/netadmin web site remove <domain>
+sudo ./bin/netadmin web site backup <domain>
+sudo ./bin/netadmin web site restore <domain> [archive]
+sudo ./bin/netadmin web dns setup <zone> <host|@> <server-ip>
+sudo ./bin/netadmin web dns remove <zone> <host|@>
+```
+
+`remove` chỉ gỡ VirtualHost và giữ nguyên dữ liệu website. `backup` đóng gói cấu hình cùng DocumentRoot vào `/var/backups/netadmin/web-sites`. `restore` kiểm tra cấu trúc archive, từ chối symlink, hỏi xác nhận rồi khôi phục file. `dns setup` tạo zone nếu chưa có và thêm A record; `dns remove` gỡ A record tương ứng.
+
+### 8.3 Log, config và service
+
+```bash
+./bin/netadmin web log <access|error> [lines] [domain]
+./bin/netadmin web config show
+sudo ./bin/netadmin web config check
+sudo ./bin/netadmin web config rollback <domain>
+sudo ./bin/netadmin web service <start|stop|restart|reload|status|enable|enable-now>
+```
+
+## 9. FTP Server
+
+### 9.1 Cài và anonymous share
+
+```bash
+sudo ./bin/netadmin ftp install
+sudo ./bin/netadmin ftp dns setup <zone> <host|@> <server-ip>
+./bin/netadmin ftp dns check <fqdn> [dns-server]
+sudo ./bin/netadmin ftp dns remove <zone> <host|@>
+sudo ./bin/netadmin ftp share add-anonymous <name> [read-only|read-write]
+./bin/netadmin ftp share list
+sudo ./bin/netadmin ftp share remove <name>
+sudo ./bin/netadmin ftp share backup <name>
+sudo ./bin/netadmin ftp share restore <name> [backup-dir]
+```
+
+`install` cấu hình vsftpd IPv4, local user, chroot, passive ports `30000-31000/tcp` và chuẩn bị BIND. Nhóm `dns` tạo/kiểm tra/gỡ A record FTP. Anonymous mặc định tắt và chỉ bật khi tạo share. `share remove` chuyển dữ liệu vào `/var/backups/netadmin/ftp-shares` trước khi gỡ registry; `backup` và `restore` lưu/đọc cả metadata share.
+
+### 9.2 Local user và vận hành
+
+```bash
+sudo ./bin/netadmin ftp user add <username> <home>
+./bin/netadmin ftp user list
+sudo ./bin/netadmin ftp user remove <username>
+sudo ./bin/netadmin ftp user lock <username>
+sudo ./bin/netadmin ftp user unlock <username>
+./bin/netadmin ftp status
+./bin/netadmin ftp sessions
+./bin/netadmin ftp diagnose
+./bin/netadmin ftp log [lines]
+sudo ./bin/netadmin ftp tls configure <certificate> <private-key>
+sudo ./bin/netadmin ftp tls disable
+./bin/netadmin ftp tls status
+./bin/netadmin ftp config show
+sudo ./bin/netadmin ftp config check
+sudo ./bin/netadmin ftp config rollback
+sudo ./bin/netadmin ftp service <start|stop|restart|status|enable|enable-now>
+```
+
+`user add` hỏi mật khẩu tương tác. `user remove` giữ home directory; `lock/unlock` khóa hoặc mở khóa password của account. `diagnose` đối chiếu service, port, firewall, SELinux, config và đường dẫn share. TLS chỉ được bật sau khi `openssl` xác nhận certificate/private key đọc được và hợp lệ. Validator FTP kiểm tra cú pháp `key=value` và xung đột listener cơ bản.
+
+## 10. Mail Server
+
+### 10.1 Cài và cấu hình
+
+```bash
+sudo ./bin/netadmin mail install
+sudo ./bin/netadmin mail configure <domain> <server-fqdn> <trusted-network-cidr>
+sudo ./bin/netadmin mail dns setup <domain> <server-fqdn> <server-ip>
+./bin/netadmin mail dns check <domain> [dns-server]
+./bin/netadmin mail test <smtp|pop3|imap> [host]
+```
+
+`install` cài Postfix/Dovecot và mở SMTP, IMAP, POP3. `configure` đặt Postfix domain/network/Maildir, SMTP AUTH qua Dovecot socket và fragment Dovecot. `dns setup` tạo A/MX record; `dns check` truy vấn MX; `test` dùng `nc` kiểm tra TCP protocol. Chỉ khai báo mạng lab tin cậy trong `trusted-network-cidr` để tránh open relay.
+
+### 10.2 User, queue, log và service
+
+```bash
+sudo ./bin/netadmin mail user add <username>
+./bin/netadmin mail user list
+sudo ./bin/netadmin mail user remove <username>
+./bin/netadmin mail status
+./bin/netadmin mail queue
+./bin/netadmin mail log [lines]
+./bin/netadmin mail config show
+sudo ./bin/netadmin mail config check
+sudo ./bin/netadmin mail config rollback
+sudo ./bin/netadmin mail service <postfix|dovecot> <start|stop|restart|status|enable|enable-now>
+```
+
+`user add` tạo Linux account và Maildir. `user remove` giữ home/Maildir. Webmail không tự cài vì cần lựa chọn ứng dụng, PHP và database riêng.
+
+## 11. Backup, rollback và marker
 
 Backup mặc định:
 
@@ -642,7 +758,10 @@ Backup mặc định:
 ├── dhcp/
 ├── dns/
 ├── storage/
-└── samba/
+├── samba/
+├── web/
+├── ftp/
+└── mail/
 ```
 
 Tên file có timestamp `YYYYMMDD-HHMMSS`. Các command `config rollback` chọn file mới nhất có cùng basename.
@@ -657,7 +776,7 @@ Các block do toolkit quản lý có dạng:
 
 DNS dùng comment `//`, Samba dùng `#`. Không đổi hoặc xóa marker thủ công nếu vẫn muốn quản lý block bằng CLI.
 
-## 9. Exit code và xử lý lỗi
+## 12. Exit code và xử lý lỗi
 
 - `0`: thành công.
 - Khác `0`: validation, dependency hoặc command hệ thống thất bại.

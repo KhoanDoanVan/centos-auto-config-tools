@@ -4,4 +4,14 @@
 # DNS_CONFIG=/etc/named.conf
 # DNS_ZONE_DIR=/var/named
 # SAMBA_CONFIG=/etc/samba/smb.conf
+# WEB_CONFIG_DIR=/etc/httpd/conf.d
+# WEB_LOG_DIR=/var/log/httpd
+# WEB_SITE_BACKUP_DIR=/var/backups/netadmin/web-sites
+# FTP_CONFIG=/etc/vsftpd/vsftpd.conf
+# FTP_ROOT=/var/ftp
+# FTP_SHARE_REGISTRY=/etc/netadmin/ftp-shares.tsv
+# FTP_SHARE_BACKUP_DIR=/var/backups/netadmin/ftp-shares
+# MAIL_POSTFIX_CONFIG=/etc/postfix/main.cf
+# MAIL_DOVECOT_CONFIG=/etc/dovecot/conf.d/99-netadmin.conf
+# MAIL_MIN_UID=1000
 # NETADMIN_DRY_RUN=0

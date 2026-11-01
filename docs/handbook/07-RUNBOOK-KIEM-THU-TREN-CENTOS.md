@@ -99,7 +99,7 @@ chmod +x bin/netadmin
 ./bin/netadmin help
 ```
 
-PASS khi thấy `netadmin 1.0.0` và danh sách module.
+PASS khi thấy `netadmin 1.2.0` và danh sách module.
 
 ## 4. Ghi topology thật
 

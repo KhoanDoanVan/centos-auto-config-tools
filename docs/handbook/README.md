@@ -10,6 +10,8 @@ Tài liệu đầy đủ:
 - [Cài đặt và kiểm thử Cockpit UI](09-COCKPIT-UI.md)
 - [Setup và chạy giao diện từng bước](../SETUP-VA-CHAY-GIAO-DIEN.md)
 - [Quick start Cockpit UI](../QUICKSTART-COCKPIT-UI.md)
+- [Web, FTP và Mail Server từ cơ bản](10-WEB-FTP-MAIL-TU-CO-BAN.md)
+- [Đối chiếu AutoScript với CLI và Cockpit UI](../TOOL-COVERAGE-AUDIT.md)
 - [Danh sách gọn toàn bộ tools](../TOOLS-LIST.md)
 - [Tham chiếu tất cả CLI và ví dụ](../CLI_REFERENCE.md)
 - [Package, command hệ thống và file liên quan](../SYSTEM_TOOLS.md)
@@ -21,6 +23,9 @@ Tài liệu đầy đủ:
 - **DNS:** IP tĩnh/DHCP qua NetworkManager, master/reverse/secondary zone, record, zone transfer, forwarder, truy vấn và vận hành BIND.
 - **Storage:** khảo sát disk, partition, filesystem, persistent mount, LVM create/extend và user/group quota.
 - **Samba:** public/group share, user, quyền đọc-ghi, SELinux, firewall, backup/rollback, theo dõi session và sao chép từ SMB share.
+- **Web:** Apache VirtualHost, DocumentRoot, DNS, backup/restore, log, cấu hình và service.
+- **FTP:** vsftpd, anonymous share, local user, passive mode, TLS, backup/quarantine, diagnostics và session.
+- **Mail:** Postfix, Dovecot, SASL socket, DNS A/MX, Maildir, protocol check, queue, log và service.
 - **Doctor:** kiểm tra nhanh môi trường chạy.
 
 Toolkit không tắt firewall hoặc SELinux. Nó chỉ mở đúng service và gắn context/boolean cần thiết, phù hợp hơn cho bài lab lẫn môi trường dài hạn.
@@ -39,6 +44,9 @@ src/features/
 ├── dns/                        # cùng quy ước
 ├── storage/
 ├── samba/
+├── web/
+├── ftp/
+├── mail/
 ├── doctor/
 └── ui/                         # cài đặt và quản lý Cockpit package
 ```
@@ -62,6 +70,9 @@ sudo ./bin/netadmin doctor
 sudo ./bin/netadmin dhcp install
 sudo ./bin/netadmin dns install
 sudo ./bin/netadmin samba install
+sudo ./bin/netadmin web install
+sudo ./bin/netadmin ftp install
+sudo ./bin/netadmin mail install
 sudo ./bin/netadmin ui install
 ```
 

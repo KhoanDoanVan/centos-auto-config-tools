@@ -20,6 +20,8 @@ Thư mục này có hai tầng tài liệu:
 9. [Thiết lập hai card mạng trên VMware Fusion](handbook/08-VMWARE-FUSION-SETUP-HAI-CARD-MANG.md)
 10. [Setup và chạy giao diện NetAdmin trên CentOS](SETUP-VA-CHAY-GIAO-DIEN.md)
 11. [Quick start Cockpit UI](QUICKSTART-COCKPIT-UI.md)
+12. [Web, FTP và Mail Server từ cơ bản](handbook/10-WEB-FTP-MAIL-TU-CO-BAN.md)
+13. [Đối chiếu AutoScript với CLI và Cockpit UI](TOOL-COVERAGE-AUDIT.md)
 
 ## Tra nhanh từng nhóm tool
 
@@ -41,6 +43,9 @@ Thư mục này có hai tầng tài liệu:
 | `storage quota` | [Storage](handbook/04-STORAGE-LVM-QUOTA-TU-CO-BAN.md) |
 | `samba install`, `share`, `user`, `permissions` | [Samba](handbook/05-SAMBA-TU-CO-BAN.md) |
 | `samba config`, `service`, `status`, `sessions`, `client` | [Samba](handbook/05-SAMBA-TU-CO-BAN.md) |
+| `web install`, `site`, `log`, `config`, `service` | [Web/FTP/Mail](handbook/10-WEB-FTP-MAIL-TU-CO-BAN.md) |
+| `ftp install`, `share`, `user`, `status`, `sessions` | [Web/FTP/Mail](handbook/10-WEB-FTP-MAIL-TU-CO-BAN.md) |
+| `mail install`, `configure`, `user`, `queue`, `log` | [Web/FTP/Mail](handbook/10-WEB-FTP-MAIL-TU-CO-BAN.md) |
 | `awk`, `grep`, `systemctl`, `firewall-cmd`, SELinux tools | [Từ điển công cụ](handbook/06-TU-DIEN-CONG-CU-LINUX.md) |
 | `dhcpd`, `omshell`, `named`, `dig`, `nmcli` | [Từ điển công cụ](handbook/06-TU-DIEN-CONG-CU-LINUX.md) |
 | `parted`, `mkfs`, LVM, quota, Samba/CIFS commands | [Từ điển công cụ](handbook/06-TU-DIEN-CONG-CU-LINUX.md) |
@@ -58,6 +63,7 @@ Thư mục này có hai tầng tài liệu:
 | [SYSTEM_TOOLS.md](SYSTEM_TOOLS.md) | Package, command hệ thống, service và file cấu hình được sử dụng |
 | [SETUP-VA-CHAY-GIAO-DIEN.md](SETUP-VA-CHAY-GIAO-DIEN.md) | Hướng dẫn copy-paste để cài và chạy giao diện Cockpit trên CentOS |
 | [QUICKSTART-COCKPIT-UI.md](QUICKSTART-COCKPIT-UI.md) | Hướng dẫn ngắn để cài, mở và chạy tool thật từ giao diện |
+| [TOOL-COVERAGE-AUDIT.md](TOOL-COVERAGE-AUDIT.md) | Bảng kiểm toàn bộ nhóm tính năng trong tài liệu AutoScript với CLI/UI hiện có |
 
 Đọc nhanh:
 
@@ -66,4 +72,4 @@ Thư mục này có hai tầng tài liệu:
 ./bin/netadmin <module> help
 ```
 
-Các module hiện có là `doctor`, `dhcp`, `dns`, `storage` và `samba`.
+Các module hiện có là `doctor`, `dhcp`, `dns`, `storage`, `samba`, `web`, `ftp`, `mail` và `ui`.

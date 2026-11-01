@@ -8,6 +8,9 @@ dispatch_command() {
     dns) dns_command "$@" ;;
     storage) storage_command "$@" ;;
     samba) samba_command "$@" ;;
+    web) web_command "$@" ;;
+    ftp) ftp_command "$@" ;;
+    mail) mail_command "$@" ;;
     ui) ui_command "$@" ;;
     *) print_root_help; die "Command không tồn tại: $command" ;;
   esac
@@ -27,6 +30,9 @@ Modules:
   dns       Network, BIND zones/records, secondary và forwarding
   storage   Disk, filesystem, LVM và quota
   samba     Samba shares, users, client và vận hành dịch vụ
+  web       Apache VirtualHost, DNS, backup, log và vận hành httpd
+  ftp       vsftpd, DNS, share/user, TLS, backup và diagnostics
+  mail      Postfix, Dovecot, SASL, DNS, users, queue và protocol check
   ui        Cài đặt và quản lý giao diện Cockpit
 
 Biến môi trường:

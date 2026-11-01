@@ -115,7 +115,76 @@ File và service:
 | Services | `smb.service`, `nmb.service` |
 | Firewall service | `samba` |
 
-## 7. Những package được tự động cài
+## 7. Web Server
+
+| Tool | Công dụng | Package |
+|---|---|---|
+| `httpd` | Apache HTTP daemon | `httpd` |
+| `apachectl configtest` | Kiểm tra cấu hình Apache | `httpd` |
+| `curl` | Kiểm thử HTTP | `curl` |
+| `tar` | Đóng gói/khôi phục website archive | `tar` |
+| `tail` | Đọc access/error log | `coreutils` |
+| `semanage`, `restorecon` | Đặt context nội dung web | `policycoreutils-python-utils`, `policycoreutils` |
+
+File và service:
+
+| Thành phần | Mặc định |
+|---|---|
+| VirtualHost | `/etc/httpd/conf.d/netadmin-<domain>.conf` |
+| Nội dung mẫu | DocumentRoot do người dùng chọn |
+| Log | `/var/log/httpd/` |
+| Service | `httpd.service` |
+| Firewall service | `http` |
+
+## 8. FTP Server
+
+| Tool | Công dụng | Package |
+|---|---|---|
+| `vsftpd` | FTP daemon | `vsftpd` |
+| `lftp` | FTP client để kiểm thử | `lftp` |
+| `useradd`, `userdel`, `passwd` | Quản lý local FTP user | `shadow-utils`, `passwd` |
+| `ss` | Kiểm tra port/session | `iproute` |
+| `setsebool`, `restorecon` | SELinux cho anonymous write | `policycoreutils`, `policycoreutils-python-utils` |
+| `openssl` | Kiểm tra certificate/private key trước khi bật FTP TLS | `openssl` |
+| `nc` | Kiểm tra TCP protocol | `nmap-ncat` |
+
+File, service và port:
+
+| Thành phần | Mặc định |
+|---|---|
+| Cấu hình | `/etc/vsftpd/vsftpd.conf` |
+| Anonymous root | `/var/ftp` |
+| Share registry | `/etc/netadmin/ftp-shares.tsv` |
+| Share backup/quarantine | `/var/backups/netadmin/ftp-shares/` |
+| Service | `vsftpd.service` |
+| Control port | TCP 21 |
+| Passive ports | TCP 30000–31000 |
+
+`vsftpd` và `lftp` vẫn có trên CentOS Stream/RHEL 10 nhưng đã bị deprecate. Module được giữ để phục vụ bài học FTP; hệ thống mới nên cân nhắc SFTP hoặc WebDAV.
+
+## 9. Mail Server
+
+| Tool | Công dụng | Package |
+|---|---|---|
+| `postfix`, `postconf`, `mailq` | SMTP, cấu hình và mail queue | `postfix` |
+| `dovecot`, `doveconf` | POP3/IMAP và kiểm tra cấu hình | `dovecot` |
+| `s-nail` | Mail client dòng lệnh | `s-nail` |
+| `useradd`, `userdel`, `passwd` | Quản lý mail user | `shadow-utils`, `passwd` |
+| `journalctl`, `ss` | Log và kiểm tra listening ports | `systemd`, `iproute` |
+| `dig` | Kiểm tra MX record | `bind-utils` |
+| `nc` | Kiểm tra SMTP/POP3/IMAP TCP | `nmap-ncat` |
+
+File, service và port:
+
+| Thành phần | Mặc định |
+|---|---|
+| Postfix config | `/etc/postfix/main.cf` |
+| Dovecot fragment | `/etc/dovecot/conf.d/99-netadmin.conf` |
+| Mailbox | `~/Maildir/` |
+| Services | `postfix.service`, `dovecot.service` |
+| Lab ports | SMTP 25, POP3 110, IMAP 143 |
+
+## 10. Những package được tự động cài
 
 | Command | Package |
 |---|---|
@@ -124,10 +193,13 @@ File và service:
 | `storage lvm install` | `lvm2` |
 | `storage quota enable` | `quota` |
 | `samba install` | `samba`, `samba-common`, `samba-common-tools`, `samba-client`, `cifs-utils` |
+| `web install` | `httpd`, `curl`, `tar`, `bind`, `bind-utils`, `policycoreutils` |
+| `ftp install` | `vsftpd`, `lftp`, `nmap-ncat`, `openssl`, `bind`, `bind-utils`, `firewalld`, `policycoreutils`, `libselinux-utils` |
+| `mail install` | `postfix`, `dovecot`, `s-nail`, `nmap-ncat`, `bind`, `bind-utils`, `policycoreutils` |
 
 Các package khác không được tự động cài để tránh thay đổi hệ thống ngoài feature đang dùng.
 
-## 8. Kiểm tra dependency thủ công
+## 11. Kiểm tra dependency thủ công
 
 ```bash
 ./bin/netadmin doctor
@@ -138,6 +210,9 @@ command -v parted lsblk blkid mkfs.xfs mkfs.ext4
 command -v pvcreate vgcreate lvcreate
 command -v quotacheck quotaon setquota repquota
 command -v testparm smbstatus pdbedit smbclient mount.cifs
+command -v httpd apachectl curl
+command -v vsftpd lftp
+command -v postfix postconf mailq dovecot doveconf
 ```
 
 Trên CentOS 7 có thể chuẩn bị đầy đủ môi trường lab bằng:
@@ -146,5 +221,6 @@ Trên CentOS 7 có thể chuẩn bị đầy đủ môi trường lab bằng:
 sudo yum install -y \
   dhcp bind bind-utils NetworkManager \
   parted lvm2 xfsprogs e2fsprogs quota \
-  samba samba-common samba-common-tools samba-client cifs-utils
+  samba samba-common samba-common-tools samba-client cifs-utils \
+  httpd curl tar vsftpd lftp postfix dovecot s-nail
 ```

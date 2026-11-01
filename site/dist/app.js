@@ -1,6 +1,6 @@
 const $=(s,p=document)=>p.querySelector(s), $$=(s,p=document)=>[...p.querySelectorAll(s)];
 const field=(key,label,placeholder,help='',required=true,type='text')=>({key,label,placeholder,help,required,type});
-const modules={doctor:{icon:'✓',title:'Doctor'},dns:{icon:'Aa',title:'DNS'},dhcp:{icon:'↦',title:'DHCP'},samba:{icon:'⇄',title:'Samba'},storage:{icon:'▰',title:'Storage'}};
+const modules={doctor:{icon:'✓',title:'Doctor'},dns:{icon:'Aa',title:'DNS'},dhcp:{icon:'↦',title:'DHCP'},samba:{icon:'⇄',title:'Samba'},web:{icon:'W',title:'Web'},ftp:{icon:'F',title:'FTP'},mail:{icon:'M',title:'Mail'},storage:{icon:'▰',title:'Storage'}};
 const tools=[];
 function add(module,type,name,desc,args,fields=[]){tools.push({id:`${module}-${tools.length}`,module,type,name,desc,args,fields})}
 
@@ -53,6 +53,59 @@ add('samba','service','Điều khiển dịch vụ Samba','Start, stop, restart 
 add('samba','check','Liệt kê file trên SMB','Xem nội dung một share từ client.','samba client list {share} {username}',[field('share','SMB share','//192.168.10.2/public'),field('username','Username','simon','Để trống nếu truy cập guest.',false),field('password','Mật khẩu Samba','','Chỉ cần khi có username.',false,'password')]);
 add('samba','manage','Sao chép file từ SMB','Tải một file từ share về máy.','samba client copy {share} {item} {destination} {username}',[field('share','SMB share','//192.168.10.2/public'),field('item','Remote item','document.txt'),field('destination','Đích','/tmp'),field('username','Username','simon','Để trống nếu truy cập guest.',false),field('password','Mật khẩu Samba','','Chỉ cần khi có username.',false,'password')]);
 
+add('web','setup','Cài đặt Apache','Cài httpd và các package hỗ trợ.','web install');
+add('web','setup','Tạo website','Tạo DocumentRoot và Apache VirtualHost.','web site add {domain} {documentRoot}',[field('domain','Domain','www.lab.local'),field('documentRoot','DocumentRoot','/var/www/www.lab.local')]);
+add('web','check','Liệt kê websites','Hiển thị các VirtualHost do NetAdmin quản lý.','web site list');
+add('web','check','Xem VirtualHost','Hiển thị cấu hình của một website.','web site show {domain}',[field('domain','Domain','www.lab.local')]);
+add('web','manage','Gỡ VirtualHost','Gỡ cấu hình nhưng giữ nguyên dữ liệu website.','web site remove {domain}',[field('domain','Domain','www.lab.local')]);
+add('web','manage','Backup website','Đóng gói VirtualHost và toàn bộ DocumentRoot.','web site backup {domain}',[field('domain','Domain','www.lab.local')]);
+add('web','manage','Restore website','Khôi phục website từ archive mới nhất hoặc file chỉ định.','web site restore {domain} {archive}',[field('domain','Domain','www.lab.local'),field('archive','Archive','','Để trống để dùng backup mới nhất.',false)]);
+add('web','setup','Thiết lập DNS website','Tạo zone khi cần và thêm A record cho website.','web dns setup {zone} {host} {serverIp}',[field('zone','DNS zone','lab.local'),field('host','Host label hoặc @','www'),field('serverIp','IP Web server','192.168.10.2')]);
+add('web','manage','Gỡ DNS website','Xóa A record do website sử dụng.','web dns remove {zone} {host}',[field('zone','DNS zone','lab.local'),field('host','Host label hoặc @','www')]);
+add('web','check','Xem Apache log','Đọc access hoặc error log toàn cục/theo domain.','web log {logKind} {lines} {domain}',[field('logKind','Loại log','access','',true,'logkind'),field('lines','Số dòng','50'),field('domain','Domain','','Để trống để đọc log Apache toàn cục.',false)]);
+add('web','check','Kiểm tra Apache config','Chạy apachectl configtest.','web config check');
+add('web','check','Xem Apache config','Hiển thị các VirtualHost NetAdmin.','web config show');
+add('web','manage','Rollback VirtualHost','Khôi phục backup gần nhất của VirtualHost.','web config rollback {domain}',[field('domain','Domain','www.lab.local')]);
+add('web','service','Điều khiển Apache','Start, stop, restart hoặc xem httpd.','web service {action}',[field('action','Thao tác','status','',true,'service')]);
+
+add('ftp','setup','Cài đặt FTP server','Cài vsftpd, lftp và cấu hình passive mode.','ftp install');
+add('ftp','setup','Thiết lập FTP DNS','Tạo zone khi cần và thêm A record cho FTP server.','ftp dns setup {zone} {host} {serverIp}',[field('zone','DNS zone','lab.local'),field('host','Host label hoặc @','ftp'),field('serverIp','IP FTP server','192.168.10.2')]);
+add('ftp','check','Kiểm tra FTP DNS','Truy vấn A record của FTP server.','ftp dns check {fqdn} {dnsServer}',[field('fqdn','FTP FQDN','ftp.lab.local'),field('dnsServer','DNS server','192.168.10.2','Không bắt buộc.',false)]);
+add('ftp','manage','Gỡ FTP DNS','Xóa A record của FTP server.','ftp dns remove {zone} {host}',[field('zone','DNS zone','lab.local'),field('host','Host label hoặc @','ftp')]);
+add('ftp','setup','Tạo anonymous share','Tạo thư mục FTP cho anonymous client.','ftp share add-anonymous {name} {mode}',[field('name','Tên share','public'),field('mode','Quyền','read-only','',true,'mode')]);
+add('ftp','check','Liệt kê FTP shares','Hiển thị anonymous shares do NetAdmin quản lý.','ftp share list');
+add('ftp','manage','Gỡ FTP share','Gỡ registry và chuyển dữ liệu sang vùng backup an toàn.','ftp share remove {name}',[field('name','Tên share','public')]);
+add('ftp','manage','Backup FTP share','Sao lưu dữ liệu và metadata của share.','ftp share backup {name}',[field('name','Tên share','public')]);
+add('ftp','manage','Restore FTP share','Khôi phục share từ snapshot mới nhất hoặc thư mục chỉ định.','ftp share restore {name} {backupDir}',[field('name','Tên share','public'),field('backupDir','Thư mục backup','','Để trống để dùng snapshot mới nhất.',false)]);
+add('ftp','manage','Tạo local FTP user','Tạo Linux user với home dùng cho FTP.','ftp user add {username} {home}',[field('username','Username','ftpuser'),field('home','Home directory','/srv/ftp/ftpuser'),field('password','Mật khẩu','','Không xuất hiện trong command.',true,'password')]);
+add('ftp','check','Liệt kê FTP users','Hiển thị local users dùng shell nologin.','ftp user list');
+add('ftp','manage','Xóa FTP user','Xóa tài khoản nhưng giữ home directory.','ftp user remove {username}',[field('username','Username','ftpuser')]);
+add('ftp','manage','Khóa FTP user','Khóa mật khẩu tài khoản FTP local.','ftp user lock {username}',[field('username','Username','ftpuser')]);
+add('ftp','manage','Mở khóa FTP user','Mở khóa mật khẩu tài khoản FTP local.','ftp user unlock {username}',[field('username','Username','ftpuser')]);
+add('ftp','check','Kiểm tra FTP status','Xem trạng thái vsftpd và port 21.','ftp status');
+add('ftp','check','Xem FTP sessions','Hiển thị kết nối TCP tới FTP server.','ftp sessions');
+add('ftp','check','Chẩn đoán FTP','Kiểm tra service, port, firewall, SELinux, config và share path.','ftp diagnose');
+add('ftp','check','Xem FTP log','Đọc xferlog, vsftpd log hoặc journal.','ftp log {lines}',[field('lines','Số dòng','50')]);
+add('ftp','setup','Bật FTP TLS','Bắt buộc local user dùng certificate và private key đã có.','ftp tls configure {certificate} {privateKey}',[field('certificate','Certificate','/etc/pki/tls/certs/ftp.crt'),field('privateKey','Private key','/etc/pki/tls/private/ftp.key')]);
+add('ftp','manage','Tắt FTP TLS','Tắt ssl_enable trong vsftpd.','ftp tls disable');
+add('ftp','check','Xem FTP TLS','Hiển thị các tùy chọn TLS đang áp dụng.','ftp tls status');
+['show','check','rollback'].forEach(a=>add('ftp',a==='check'?'check':'manage',`FTP config: ${a}`,`${a} cấu hình vsftpd.`,`ftp config ${a}`));
+add('ftp','service','Điều khiển FTP','Start, stop, restart hoặc xem vsftpd.','ftp service {action}',[field('action','Thao tác','status','',true,'service')]);
+
+add('mail','setup','Cài đặt Mail server','Cài Postfix, Dovecot và mail client.','mail install');
+add('mail','setup','Cấu hình Mail server','Cấu hình domain, FQDN, trusted network và Maildir.','mail configure {domain} {fqdn} {network}',[field('domain','Mail domain','lab.local'),field('fqdn','Server FQDN','mail.lab.local'),field('network','Trusted network','192.168.10.0/24')]);
+add('mail','setup','Thiết lập DNS Mail','Tạo A và MX record cho mail server.','mail dns setup {domain} {fqdn} {serverIp}',[field('domain','Mail domain','lab.local'),field('fqdn','Server FQDN','mail.lab.local'),field('serverIp','IP Mail server','192.168.10.2')]);
+add('mail','check','Kiểm tra Mail DNS','Truy vấn MX record qua DNS server tùy chọn.','mail dns check {domain} {dnsServer}',[field('domain','Mail domain','lab.local'),field('dnsServer','DNS server','192.168.10.2','Không bắt buộc.',false)]);
+add('mail','manage','Tạo mail user','Tạo Linux user và Maildir.','mail user add {username}',[field('username','Username','u1'),field('password','Mật khẩu','','Không xuất hiện trong command.',true,'password')]);
+add('mail','check','Liệt kê mail users','Hiển thị các tài khoản local có thể nhận mail.','mail user list');
+add('mail','manage','Xóa mail user','Xóa tài khoản nhưng giữ home và Maildir.','mail user remove {username}',[field('username','Username','u1')]);
+add('mail','check','Kiểm tra Mail status','Xem Postfix, Dovecot và các port mail.','mail status');
+add('mail','check','Xem mail queue','Hiển thị thư đang nằm trong Postfix queue.','mail queue');
+add('mail','check','Xem mail log','Đọc log Postfix và Dovecot.','mail log {lines}',[field('lines','Số dòng','50')]);
+add('mail','check','Kiểm tra protocol Mail','Kiểm tra TCP SMTP, POP3 hoặc IMAP.','mail test {mailProtocol} {host}',[field('mailProtocol','Protocol','smtp','',true,'mailprotocol'),field('host','Hostname/IP','127.0.0.1')]);
+['show','check','rollback'].forEach(a=>add('mail',a==='check'?'check':'manage',`Mail config: ${a}`,`${a} cấu hình Postfix/Dovecot.`,`mail config ${a}`));
+add('mail','service','Điều khiển Mail service','Điều khiển Postfix hoặc Dovecot.','mail service {mailService} {action}',[field('mailService','Dịch vụ','postfix','',true,'mailservice'),field('action','Thao tác','status','',true,'service')]);
+
 add('storage','check','Liệt kê ổ đĩa','Hiển thị disk, partition và dung lượng.','storage disk list');
 add('storage','check','Xem dung lượng trống','Kiểm tra vùng chưa phân vùng trên disk.','storage disk free {device}',[field('device','Thiết bị','/dev/sdb')]);
 add('storage','setup','Tạo partition','Tạo partition mới trên disk.','storage partition create {device} {start} {end} {table}',[field('device','Thiết bị','/dev/sdb'),field('start','Bắt đầu','1MiB'),field('end','Kết thúc','10GiB'),field('table','Partition table','gpt','',true,'table')]);
@@ -71,7 +124,7 @@ add('storage','manage','Đặt user quota','Đặt giới hạn block và inode.
 add('storage','check','Xem báo cáo quota','Hiển thị quota tại mount point.','storage quota report {mountpoint}',[field('mountpoint','Mount point','/data')]);
 
 let currentModule='all',currentTool=null,history=[];
-const optionSets={record:['A','AAAA','CNAME','MX','NS','TXT','PTR'],service:['status','start','stop','restart','enable','enable-now'],mode:['read-only','read-write'],permission:['read','write'],table:['gpt','msdos'],filesystem:['xfs','ext4','ext3']};
+const optionSets={record:['A','AAAA','CNAME','MX','NS','TXT','PTR'],service:['status','start','stop','restart','reload','enable','enable-now'],mode:['read-only','read-write'],permission:['read','write'],table:['gpt','msdos'],filesystem:['xfs','ext4','ext3'],logkind:['access','error'],mailservice:['postfix','dovecot'],mailprotocol:['smtp','pop3','imap']};
 function visibleTools(){const q=$('#search').value.trim().toLowerCase(),action=$('#actionFilter').value;return tools.filter(t=>(currentModule==='all'||t.module===currentModule)&&(action==='all'||t.type===action)&&(`${t.name} ${t.desc} ${t.args}`).toLowerCase().includes(q))}
 function render(){const list=visibleTools();$('#resultCount').textContent=`${list.length} tools`;$('#toolList').innerHTML=list.map(t=>`<button type="button" class="tool-item ${currentTool?.id===t.id?'active':''}" data-id="${t.id}"><span class="tool-icon">${modules[t.module].icon}</span><span class="tool-info"><strong>${t.name}</strong><small>${t.desc}</small></span><code>${t.module} ${t.args.split(' ').slice(1,3).join(' ')}</code><span class="tool-arrow">→</span></button>`).join('')||'<div class="empty-result">Không tìm thấy tool phù hợp.</div>'}
 function renderField(f){const control=optionSets[f.type]?`<select name="${f.key}">${optionSets[f.type].map(v=>`<option ${v===f.placeholder?'selected':''}>${v}</option>`).join('')}</select>`:`<input type="${f.type==='password'?'password':'text'}" name="${f.key}" placeholder="${f.placeholder}" value="${f.placeholder}" autocomplete="${f.type==='password'?'new-password':'off'}">`;return `<div class="field"><label>${f.label}${f.required?' <em>*</em>':''}</label>${control}${f.help?`<small>${f.help}</small>`:''}</div>`}
@@ -80,7 +133,7 @@ function updateCommand(){if(!currentTool)return;let args=currentTool.args;curren
 function valueOf(key){return $(`[name="${key}"]`)?.value.trim()||''}
 function commandArgs(){return currentTool.args.split(/\s+/).map(token=>{const match=token.match(/^\{(.+)\}$/);return match?valueOf(match[1]):token}).filter(Boolean)}
 function validateTool(){const missing=currentTool.fields.filter(f=>f.required&&!valueOf(f.key));if(missing.length)throw new Error(`Thiếu thông tin: ${missing.map(f=>f.label).join(', ')}`);if(currentTool.module==='samba'&&currentTool.args.startsWith('samba client')&&valueOf('username')&&!valueOf('password'))throw new Error('Cần nhập mật khẩu khi sử dụng Samba username.')}
-function interactionFor(args){const signature=args.slice(0,3).join(' ');if(signature==='storage partition create'||signature==='storage filesystem format'||signature==='storage lvm pv-create'){const target=signature==='storage partition create'?args[3]:args[3];const typed=window.prompt(`Tác vụ có thể làm mất dữ liệu.\nNhập chính xác ${target} để tiếp tục:`);if(typed!==target)throw new Error('Đã hủy: target xác nhận không khớp.');return {pty:true,input:`${target}\n`}}if(signature==='storage lvm lv-extend'){if(!window.confirm(`Xác nhận mở rộng ${args[3]}?`))throw new Error('Đã hủy thao tác.');return {pty:true,input:'y\n'}}if(signature==='samba user add')return {pty:true,input:`${valueOf('password')}\n${valueOf('password')}\n`};if(signature==='samba client list'||signature==='samba client copy'){return valueOf('username')?{pty:true,input:`${valueOf('password')}\n`}:{pty:false,input:''}}return {pty:false,input:''}}
+function interactionFor(args){const signature=args.slice(0,3).join(' ');if(signature==='storage partition create'||signature==='storage filesystem format'||signature==='storage lvm pv-create'){const target=args[3];const typed=window.prompt(`Tác vụ có thể làm mất dữ liệu.\nNhập chính xác ${target} để tiếp tục:`);if(typed!==target)throw new Error('Đã hủy: target xác nhận không khớp.');return {pty:true,input:`${target}\n`}}if(signature==='storage lvm lv-extend'){if(!window.confirm(`Xác nhận mở rộng ${args[3]}?`))throw new Error('Đã hủy thao tác.');return {pty:true,input:'y\n'}}if(signature==='web site restore'){if(!window.confirm('Khôi phục website từ backup?'))throw new Error('Đã hủy restore.');return {pty:true,input:'y\n'}}if(args[1]==='config'&&args[2]==='rollback'){if(!window.confirm('Khôi phục bản cấu hình gần nhất?'))throw new Error('Đã hủy rollback.');return {pty:true,input:'y\ny\n'}}if(signature==='samba user add'||signature==='ftp user add'||signature==='mail user add')return {pty:true,input:`${valueOf('password')}\n${valueOf('password')}\n`};if(signature==='samba client list'||signature==='samba client copy'){return valueOf('username')?{pty:true,input:`${valueOf('password')}\n`}:{pty:false,input:''}}return {pty:false,input:''}}
 function appendTerminal(text,className=''){const span=document.createElement('span');if(className)span.className=className;span.textContent=text;$('#terminal').appendChild(span);$('#terminal').scrollTop=$('#terminal').scrollHeight}
 function cockpitAvailable(){return typeof window.cockpit!=='undefined'&&typeof window.cockpit.spawn==='function'}
 function setRuntimeStatus(){const card=$('.server-card');if(cockpitAvailable()){card.classList.remove('disconnected');$('#runtimeHost').textContent=location.hostname||'localhost';$('#runtimeStatus').textContent='Cockpit đã kết nối'}else{card.classList.add('disconnected');$('#runtimeHost').textContent='Demo mode';$('#runtimeStatus').textContent='Mở trong Cockpit để chạy tool'}}

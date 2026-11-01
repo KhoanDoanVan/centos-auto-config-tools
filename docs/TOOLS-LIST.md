@@ -125,6 +125,79 @@
 ./bin/netadmin samba client copy //<server>/<share> <remote-item> <destination> [username]
 ```
 
+## Web Server
+
+```text
+./bin/netadmin web help
+./bin/netadmin web install
+./bin/netadmin web site add <domain> <document-root>
+./bin/netadmin web site list
+./bin/netadmin web site show <domain>
+./bin/netadmin web site remove <domain>
+./bin/netadmin web site backup <domain>
+./bin/netadmin web site restore <domain> [archive]
+./bin/netadmin web dns setup <zone> <host|@> <server-ip>
+./bin/netadmin web dns remove <zone> <host|@>
+./bin/netadmin web log access [lines] [domain]
+./bin/netadmin web log error [lines] [domain]
+./bin/netadmin web config show
+./bin/netadmin web config check
+./bin/netadmin web config rollback <domain>
+./bin/netadmin web service start|stop|restart|reload|status|enable|enable-now
+```
+
+## FTP Server
+
+```text
+./bin/netadmin ftp help
+./bin/netadmin ftp install
+./bin/netadmin ftp dns setup <zone> <host|@> <server-ip>
+./bin/netadmin ftp dns check <fqdn> [dns-server]
+./bin/netadmin ftp dns remove <zone> <host|@>
+./bin/netadmin ftp share add-anonymous <name> [read-only|read-write]
+./bin/netadmin ftp share list
+./bin/netadmin ftp share remove <name>
+./bin/netadmin ftp share backup <name>
+./bin/netadmin ftp share restore <name> [backup-dir]
+./bin/netadmin ftp user add <username> <home>
+./bin/netadmin ftp user list
+./bin/netadmin ftp user remove <username>
+./bin/netadmin ftp user lock <username>
+./bin/netadmin ftp user unlock <username>
+./bin/netadmin ftp status
+./bin/netadmin ftp sessions
+./bin/netadmin ftp diagnose
+./bin/netadmin ftp log [lines]
+./bin/netadmin ftp tls configure <certificate> <private-key>
+./bin/netadmin ftp tls disable
+./bin/netadmin ftp tls status
+./bin/netadmin ftp config show
+./bin/netadmin ftp config check
+./bin/netadmin ftp config rollback
+./bin/netadmin ftp service start|stop|restart|status|enable|enable-now
+```
+
+## Mail Server
+
+```text
+./bin/netadmin mail help
+./bin/netadmin mail install
+./bin/netadmin mail configure <domain> <server-fqdn> <trusted-network-cidr>
+./bin/netadmin mail dns setup <domain> <server-fqdn> <server-ip>
+./bin/netadmin mail dns check <domain> [dns-server]
+./bin/netadmin mail test <smtp|pop3|imap> [host]
+./bin/netadmin mail user add <username>
+./bin/netadmin mail user list
+./bin/netadmin mail user remove <username>
+./bin/netadmin mail status
+./bin/netadmin mail queue
+./bin/netadmin mail log [lines]
+./bin/netadmin mail config show
+./bin/netadmin mail config check
+./bin/netadmin mail config rollback
+./bin/netadmin mail service postfix|dovecot start|stop|restart|status|enable|enable-now
+```
+
 ## Environment variables
 
 ```text
@@ -140,6 +213,16 @@ DNS_CONFIG
 DNS_MANAGED_CONFIG
 DNS_ZONE_DIR
 SAMBA_CONFIG
+WEB_CONFIG_DIR
+WEB_LOG_DIR
+WEB_SITE_BACKUP_DIR
+FTP_CONFIG
+FTP_ROOT
+FTP_SHARE_REGISTRY
+FTP_SHARE_BACKUP_DIR
+MAIL_POSTFIX_CONFIG
+MAIL_DOVECOT_CONFIG
+MAIL_MIN_UID
 ```
 
 ## Core system tools
@@ -177,6 +260,8 @@ restorecon
 chcon
 chown
 chmod
+openssl
+nc
 ```
 
 ## Network and DNS system tools
@@ -244,6 +329,41 @@ useradd
 usermod
 id
 getent
+```
+
+## Web system tools
+
+```text
+httpd
+apachectl
+curl
+tar
+```
+
+## FTP system tools
+
+```text
+vsftpd
+lftp
+passwd
+useradd
+userdel
+ss
+```
+
+## Mail system tools
+
+```text
+postfix
+postconf
+mailq
+dovecot
+doveconf
+passwd
+useradd
+userdel
+journalctl
+ss
 ```
 
 ## Diagnostic tools
