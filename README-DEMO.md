@@ -2,7 +2,7 @@
 
 Tài liệu này là kịch bản trình bày ngắn gọn, bám sát mã nguồn và giao diện hiện tại của dự án. Môi trường demo đang được giả định là **CentOS Stream 10 + Cockpit**.
 
-> Lưu ý quan trọng: CentOS Stream 10 không còn ISC DHCP. Không chạy module DHCP trong phần demo trực tiếp. Có thể giới thiệu DHCP là module thuộc phạm vi dự án, nhưng phải nói rõ backend `dhcpd` cần hệ RHEL 9 hoặc một backend Kea mới.
+> Lưu ý quan trọng: CentOS Stream 10 không còn ISC DHCP. Module cho phép xem luồng và dữ liệu mẫu khi Dry run bật, đồng thời ghi rõ đây là dữ liệu mô phỏng. Thực thi DHCP thật vẫn cần hệ RHEL 9 hoặc một backend Kea mới.
 
 ## 1. Mục tiêu và phân bổ thời gian
 
@@ -239,6 +239,20 @@ Tuyệt đối không tắt Dry run và không xác nhận `/dev/sda`, `/dev/nvm
 
 > Phần demo cho thấy NetAdmin Toolkit không chỉ gom lệnh vào các nút bấm mà tổ chức chúng thành một quy trình có kiểm tra, xem trước và phản hồi rõ ràng.
 
+### Tùy chọn khi được hỏi về DHCP — tối đa 1 phút
+
+Giữ Dry run bật, chọn lần lượt **DHCP → Liệt kê DHCP scopes**, **Liệt kê reservations** hoặc **Liệt kê DHCP leases**. Output sử dụng một bộ dữ liệu mẫu nhất quán và dòng cuối ghi rõ:
+
+```text
+[DRY-RUN] Dữ liệu mô phỏng DHCP trên CentOS 10; hệ thống chưa được thay đổi.
+```
+
+**Nói:**
+
+> CentOS 10 không còn ISC DHCP nên đây là luồng Dry run với dữ liệu mô phỏng để trình bày cách UI và CLI xử lý scope, reservation và lease. Khi tắt Dry run, công cụ chủ động từ chối chạy backend không tương thích. Muốn cấp lease thật, nhóm sẽ dùng RHEL 9 hoặc phát triển adapter Kea.
+
+Không nói service hoặc lease mô phỏng là kết quả runtime thật.
+
 ## Slide 6 — Kết luận — 1 phút 10 giây
 
 **Nói:**
@@ -305,11 +319,11 @@ Không. Cơ chế hiện tại chủ yếu sao lưu và khôi phục các tệp 
 
 ### Vì sao Doctor báo `PARTIAL` trên CentOS Stream 10?
 
-Vì RHEL/CentOS 10 đã loại bỏ ISC DHCP và chuyển hướng sang Kea, trong khi module hiện tại quản lý `dhcpd.conf`. Các module khác không tự động hỏng vì cảnh báo này. Muốn demo DHCP cần dùng Rocky/Alma/RHEL 9 hoặc phát triển backend Kea riêng.
+Vì RHEL/CentOS 10 đã loại bỏ ISC DHCP và chuyển hướng sang Kea, trong khi module hiện tại quản lý `dhcpd.conf`. Các module khác không tự động hỏng vì cảnh báo này. Có thể demo luồng Dry run bằng dữ liệu mô phỏng; muốn cấp lease thật cần Rocky/Alma/RHEL 9 hoặc backend Kea riêng.
 
 ### Vì sao vẫn để DHCP trên giao diện?
 
-DHCP vẫn thuộc nội dung môn học và hợp đồng module của dự án. Giao diện giữ module để tài liệu và CLI nhất quán giữa các môi trường, nhưng runtime phải kiểm tra phiên bản và từ chối cài ISC DHCP trên CentOS 10 thay vì báo thành công giả.
+DHCP vẫn thuộc nội dung môn học và hợp đồng module của dự án. Giao diện giữ module để tài liệu và CLI nhất quán giữa các môi trường. Trên CentOS 10, Dry run có dữ liệu mô phỏng được ghi nhãn; khi thực thi thật, runtime từ chối cài ISC DHCP thay vì báo thành công giả.
 
 ### Vì sao không chạy đầy đủ trên Ubuntu?
 

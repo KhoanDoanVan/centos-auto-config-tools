@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source "$APP_ROOT/src/features/dhcp/infra/dhcpd.sh"
+source "$APP_ROOT/src/features/dhcp/infra/demo.sh"
 source "$APP_ROOT/src/features/dhcp/commands/install.sh"
 source "$APP_ROOT/src/features/dhcp/commands/scope.sh"
 source "$APP_ROOT/src/features/dhcp/commands/reservation.sh"
@@ -23,6 +24,15 @@ EOF
 
 dhcp_command() {
   local command="${1:-help}"; shift || true
+  if dhcp_isc_unsupported; then
+    if is_dry_run && [[ "$command" != help && "$command" != -h && "$command" != --help ]]; then
+      dhcp_demo_command "$command" "$@"
+      return
+    fi
+    if [[ "$command" != help && "$command" != -h && "$command" != --help ]]; then
+      die "CentOS/RHEL 10 không hỗ trợ backend ISC DHCP hiện tại. Bật Dry run để xem dữ liệu mô phỏng hoặc dùng RHEL 9 để chạy thật."
+    fi
+  fi
   case "$command" in
     install) dhcp_install "$@" ;;
     scope) dhcp_scope_command "$@" ;;
