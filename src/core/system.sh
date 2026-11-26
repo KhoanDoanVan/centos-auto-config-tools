@@ -8,13 +8,32 @@ run() {
   "$@"
 }
 
+is_dry_run() { [[ "${NETADMIN_DRY_RUN:-0}" == 1 ]]; }
+
+os_release_value() {
+  local key="$1"
+  [[ -r /etc/os-release ]] || return 1
+  ( . /etc/os-release; printf '%s\n' "${!key:-}" )
+}
+
+os_id() { os_release_value ID; }
+os_id_like() { os_release_value ID_LIKE; }
+os_version_id() { os_release_value VERSION_ID; }
+
+is_rhel_family() {
+  local id like
+  id="$(os_id 2>/dev/null || true)"
+  like="$(os_id_like 2>/dev/null || true)"
+  [[ "$id" =~ ^(rhel|centos|rocky|almalinux|ol|fedora)$ || " $like " == *" rhel "* || " $like " == *" fedora "* ]]
+}
+
 command_exists() { command -v "$1" >/dev/null 2>&1; }
 require_command() { command_exists "$1" || die "Thiếu command: $1"; }
 
 package_manager() {
   if command_exists dnf; then printf '%s\n' dnf
   elif command_exists yum; then printf '%s\n' yum
-  else die "Chỉ hỗ trợ hệ thống dùng dnf hoặc yum."
+  else die "Runtime hiện chỉ hỗ trợ hệ RHEL dùng dnf/yum. Trên Ubuntu chỉ chạy audit tĩnh; không chạy install/config thật."
   fi
 }
 
@@ -49,6 +68,26 @@ firewall_add_service() {
 selinux_enable_boolean() {
   local key="$1"
   command_exists setsebool && run setsebool -P "$key" on || log_warn "Không có setsebool; bỏ qua $key."
+}
+
+selinux_set_file_context() {
+  local path="$1" context="$2" expression="${1}(/.*)?"
+  command_exists getenforce || return 0
+  [[ "$(getenforce)" != Disabled ]] || return 0
+  if command_exists semanage; then
+    if is_dry_run; then
+      run semanage fcontext -a -t "$context" "$expression"
+    else
+      semanage fcontext -a -t "$context" "$expression" 2>/dev/null || \
+        semanage fcontext -m -t "$context" "$expression"
+    fi
+    command_exists restorecon && run restorecon -Rv "$path"
+  elif command_exists chcon; then
+    run chcon -Rt "$context" "$path"
+    log_warn "SELinux context được đặt bằng chcon và có thể mất sau relabel."
+  else
+    log_warn "Thiếu semanage/chcon; chưa thể đặt SELinux context $context cho $path."
+  fi
 }
 
 write_stdin_file() {

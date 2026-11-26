@@ -95,12 +95,14 @@ sudo ./bin/netadmin dhcp install
 
 Thực hiện:
 
-1. Cài `dhcp-server` bằng `dnf`, hoặc `dhcp` bằng `yum`.
+1. Trên họ RHEL cũ hơn 10, cài `dhcp-server` bằng `dnf`, hoặc `dhcp` bằng `yum` cũ; ưu tiên Rocky/Alma 9 cho lab mới.
 2. Tạo cấu hình DHCP tối thiểu nếu file chưa tồn tại.
 3. Enable service `dhcpd`, chưa tự start khi chưa có scope.
 4. Mở service `dhcp` trong firewalld nếu firewalld đang chạy.
 
 Toolkit không tắt firewall.
+
+> **Giới hạn phiên bản:** RHEL/CentOS 10 đã bỏ ISC DHCP và thay bằng Kea. Module này hiện quản lý `dhcpd.conf`, nên `dhcp install` sẽ dừng có chủ đích trên RHEL/CentOS 10. Ubuntu không phải runtime được hỗ trợ của dự án; chỉ dùng để chạy `scripts/audit-static.sh`.
 
 ### 4.2 Tạo scope
 

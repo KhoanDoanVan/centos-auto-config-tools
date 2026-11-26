@@ -3,6 +3,7 @@
 on_unexpected_error() {
   local status="$1" line="$2" command="$3"
   [[ "$status" -eq 0 ]] && return
+  [[ "$command" == return* ]] && return 0
   log_error "Lệnh thất bại tại dòng $line (exit=$status): $command"
 }
 

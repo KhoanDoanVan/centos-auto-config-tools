@@ -28,14 +28,5 @@ samba_remove_share_block() {
 samba_check() { require_command testparm; run testparm -s "$(samba_config_path)" >/dev/null; }
 
 samba_prepare_selinux_path() {
-  local path="$1"
-  if command_exists getenforce && [[ "$(getenforce)" != Disabled ]]; then
-    if command_exists semanage; then
-      semanage fcontext -a -t samba_share_t "${path}(/.*)?" 2>/dev/null || semanage fcontext -m -t samba_share_t "${path}(/.*)?"
-      run restorecon -Rv "$path"
-    elif command_exists chcon; then
-      run chcon -Rt samba_share_t "$path"
-      log_warn "SELinux context được đặt bằng chcon (không bền qua relabel)."
-    fi
-  fi
+  selinux_set_file_context "$1" samba_share_t
 }

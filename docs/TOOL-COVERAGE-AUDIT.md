@@ -1,6 +1,6 @@
 # Đối chiếu AutoScript với NetAdmin Toolkit
 
-Ngày audit: 30/10/2026.
+Ngày audit gần nhất: 26/11/2026.
 
 Nguồn đối chiếu:
 
@@ -12,7 +12,10 @@ Nguồn đối chiếu:
 
 - Các chức năng có mô tả đủ rõ trong hai tài liệu đã có CLI Bash tương ứng.
 - 123 thao tác được đưa lên Cockpit UI: Doctor 1, DNS 20, DHCP 14, Samba 18, Web 14, FTP 25, Mail 15 và Storage 16.
-- Các lệnh thay đổi hệ thống vẫn cần chạy thử trên CentOS Stream 10. Kiểm tra trên máy phát triển chỉ xác nhận cấu trúc, route, help, cú pháp Bash/JavaScript và tính đồng bộ tài liệu/UI.
+- `scripts/audit-static.sh` đã xác nhận cú pháp Bash/JavaScript, toàn bộ module dispatch, 123 route UI/CLI, placeholder/field và đường dẫn Cockpit runtime.
+- Kết quả này **không đồng nghĩa 123 thao tác đã được nghiệm thu trên dịch vụ thật**. Các lệnh thay đổi package, service, firewall, SELinux, user, disk và tệp cấu hình phải chạy trên máy lab Linux phù hợp.
+- Runtime hiện nhắm họ RHEL dùng `dnf`/`yum`. Ubuntu chỉ phù hợp chạy audit tĩnh; không dùng làm bằng chứng rằng package, service và đường dẫn CentOS hoạt động.
+- RHEL/CentOS 10 đã bỏ ISC DHCP và chuyển sang Kea. Module DHCP hiện dùng `dhcpd`, vì vậy cần hệ RHEL cũ hơn 10; ưu tiên Rocky/Alma 9. Trên CentOS 10, `dhcp install` chủ động dừng với thông báo rõ thay vì báo hoàn tất giả.
 - Webmail chưa được đánh dấu hoàn tất vì tài liệu yêu cầu kiểm tra package SquirrelMail hoặc chọn Roundcube cùng PHP/database. Đây là một quyết định triển khai chưa được định nghĩa, không phải một tool Bash có thể cài an toàn bằng giả định.
 - Network Load Balancing chưa có script hoặc yêu cầu nguồn trong tài liệu, nên không thể đối chiếu hay tự suy diễn implementation.
 
@@ -28,7 +31,7 @@ Trạng thái dùng trong bảng:
 
 | Yêu cầu trong AutoScript | CLI chính | Cockpit | Trạng thái |
 |---|---|---:|---|
-| Cài DHCP server | `dhcp install` | Có | Đủ; cần test CentOS |
+| Cài DHCP server | `dhcp install` | Có | Hệ RHEL cũ hơn 10; ưu tiên Rocky/Alma 9; bị chặn trên RHEL/CentOS 10 |
 | Tạo/cập nhật/xóa subnet scope | `dhcp scope add/update/remove` | Có | Đủ |
 | Liệt kê scope | `dhcp scope list` | Có | Đủ |
 | Reservation theo MAC/IP | `dhcp reservation add/list/remove` | Có | Đủ |
@@ -132,9 +135,21 @@ Ghi chú: FTP/vsftpd được giữ để phục vụ bài lab. Với hệ thố
 |---|---|
 | NLB | Chưa có đặc tả: tài liệu nguồn ghi rõ chưa có script hoặc tài liệu nguồn |
 
-## Checklist xác nhận trên CentOS Stream 10
+## Checklist kiểm tra và nghiệm thu
 
-Sau khi pull source mới, chạy:
+Trên Ubuntu hoặc máy phát triển, chỉ chạy audit không thay đổi hệ thống:
+
+```bash
+./scripts/audit-static.sh
+```
+
+Để nghiệm thu toàn bộ implementation hiện tại, dùng Rocky Linux 9, AlmaLinux 9 hoặc hệ RHEL 8/9 tương đương. Trước khi cài dịch vụ, chạy preflight read-only:
+
+```bash
+./scripts/audit-runtime.sh
+```
+
+Sau đó chạy:
 
 ```bash
 sudo ./bin/netadmin doctor
@@ -144,4 +159,6 @@ sudo ./bin/netadmin doctor
 sudo ./bin/netadmin ui install
 ```
 
-Sau đó test từng module theo runbook. Chỉ chuyển các mục **Cần test CentOS** thành nghiệm thu hoàn tất sau khi package được cài, service khởi động, firewall/SELinux đúng và client khác trong mạng lab truy cập thành công.
+Test từng module theo runbook. Chỉ đánh dấu nghiệm thu khi package cài được, service khởi động, cấu hình qua validator, firewall/SELinux đúng và client khác trong mạng lab truy cập thành công.
+
+CentOS Stream 10 chỉ có thể nghiệm thu các module không phụ thuộc ISC DHCP. Muốn nghiệm thu DHCP trên RHEL/CentOS 10 cần một backend Kea riêng; không được coi `dhcpd.conf` là cấu hình Kea.

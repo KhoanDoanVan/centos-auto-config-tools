@@ -11,15 +11,5 @@ web_check() {
 }
 
 web_prepare_selinux_path() {
-  local path="$1"
-  if command_exists getenforce && [[ "$(getenforce)" != Disabled ]]; then
-    if command_exists semanage; then
-      semanage fcontext -a -t httpd_sys_content_t "${path}(/.*)?" 2>/dev/null || \
-        semanage fcontext -m -t httpd_sys_content_t "${path}(/.*)?"
-      run restorecon -Rv "$path"
-    elif command_exists chcon; then
-      run chcon -Rt httpd_sys_content_t "$path"
-      log_warn "SELinux context được đặt bằng chcon và có thể mất sau relabel."
-    fi
-  fi
+  selinux_set_file_context "$1" httpd_sys_content_t
 }

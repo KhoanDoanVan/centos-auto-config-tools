@@ -28,7 +28,8 @@ Tài liệu này giải thích các command/package bên ngoài mà NetAdmin Too
 Package:
 
 - CentOS 7/yum: `dhcp`.
-- RHEL/Rocky/Alma/Fedora mới/dnf: `dhcp-server`.
+- RHEL/Rocky/Alma cũ hơn 10: `dhcp-server` hoặc `dhcp`; ưu tiên Rocky/Alma 9 cho lab mới.
+- RHEL/CentOS 10: ISC DHCP đã bị gỡ và Kea là hướng thay thế; module `dhcpd.conf` hiện không chạy trên phiên bản này.
 
 File và service:
 
@@ -188,7 +189,7 @@ File, service và port:
 
 | Command | Package |
 |---|---|
-| `dhcp install` | `dhcp-server` hoặc `dhcp` |
+| `dhcp install` | `dhcp-server` hoặc `dhcp` trên hệ RHEL cũ hơn 10; bị chặn rõ ràng trên RHEL/CentOS 10 |
 | `dns install` | `bind`, `bind-utils`, `NetworkManager` |
 | `storage lvm install` | `lvm2` |
 | `storage quota enable` | `quota` |

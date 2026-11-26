@@ -21,8 +21,12 @@ ui_install() {
     die "Thiếu Cockpit package tại: $source_dir"
 
   if ! command_exists cockpit-bridge; then
-    log_info "Đang cài Cockpit..."
-    install_packages cockpit
+    if [[ "$(os_id 2>/dev/null || true)" =~ ^(ubuntu|debian)$ ]]; then
+      die "Ubuntu/Debian chỉ dùng để audit hoặc xem UI. Hãy cài Cockpit thủ công bằng 'sudo apt install cockpit', rồi chạy lại ui install."
+    else
+      log_info "Đang cài Cockpit..."
+      install_packages cockpit
+    fi
   fi
 
   run install -d -m 0755 "$package_dir"

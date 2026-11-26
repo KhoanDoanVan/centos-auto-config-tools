@@ -21,6 +21,21 @@ samba_client_copy() {
   assert_abs_path "$destination"; mount_dir="$(mktemp -d)"
   SAMBA_CLIENT_MOUNT="$mount_dir"; SAMBA_CLIENT_CREDENTIALS=''
   trap samba_client_cleanup EXIT
+  if is_dry_run; then
+    if [[ -n "$username" ]]; then
+      log_info "Sẽ mount $share bằng credentials tạm của user $username (mật khẩu không được ghi vào command)."
+      run mount.cifs "$share" "$mount_dir" -o credentials=/run/netadmin-smb-credentials
+    else
+      run mount.cifs "$share" "$mount_dir" -o guest
+    fi
+    run mkdir -p "$destination"
+    run cp -a "$mount_dir/$item" "$destination/"
+    run umount "$mount_dir"
+    rmdir "$mount_dir"
+    SAMBA_CLIENT_MOUNT=''; trap - EXIT
+    log_ok "Dry run hợp lệ cho thao tác sao chép $item vào $destination"
+    return 0
+  fi
   if [[ -n "$username" ]]; then
     credentials="$(mktemp)"; SAMBA_CLIENT_CREDENTIALS="$credentials"; chmod 600 "$credentials"
     printf 'username=%s\n' "$username" > "$credentials"
