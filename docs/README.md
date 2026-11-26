@@ -1,5 +1,7 @@
 # Tài liệu NetAdmin Toolkit
 
+Kịch bản trình bày và checklist trước buổi demo: [README demo 13–15 phút](../README-DEMO.md).
+
 Thư mục này có hai tầng tài liệu:
 
 - **Giáo trình từ cơ bản:** dành cho người chưa có kiến thức network/Linux domain.

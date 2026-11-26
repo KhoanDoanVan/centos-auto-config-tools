@@ -29,7 +29,8 @@ dns_record_add() {
   type="$(printf '%s' "$3" | tr '[:lower:]' '[:upper:]')"
   [[ "$name" == @ || "$name" == \* ]] || assert_identifier "$name"
   assert_uint "$ttl"; dns_validate_record "$type" "$value"
-  file="$(dns_zone_file "$zone")"; [[ -e "$file" ]] || die "Không tìm thấy zone file: $file"
+  file="$(dns_zone_file "$zone")"; [[ -e "$file" ]] || \
+    die "Zone '$zone' chưa tồn tại. Hãy chạy 'netadmin dns zone add $zone <server-ip>' trước khi thêm record."
   backup="$(backup_file "$file" dns)"
   if [[ "$type" == TXT ]]; then value="\"${value//\"/}\""; fi
   if [[ "${NETADMIN_DRY_RUN:-0}" == 1 ]]; then log_info "Sẽ thêm $name $type vào $file"
@@ -44,7 +45,8 @@ dns_record_remove() {
   require_root
   local zone="${1%.}" name="$2" type file temporary backup
   type="$(printf '%s' "$3" | tr '[:lower:]' '[:upper:]')"
-  file="$(dns_zone_file "$zone")"; [[ -e "$file" ]] || die "Không tìm thấy zone file: $file"
+  file="$(dns_zone_file "$zone")"; [[ -e "$file" ]] || \
+    die "Zone '$zone' chưa tồn tại. Hãy tạo zone trước khi xóa record."
   backup="$(backup_file "$file" dns)"; temporary="$(mktemp)"
   awk -v n="$name" -v t="$type" 'BEGIN{IGNORECASE=1} $1==n && ($3==t || $4==t){found=1; next} {print} END{if(!found) exit 4}' "$file" > "$temporary" || { local s=$?; rm -f "$temporary"; [[ $s -eq 4 ]] && die "Không tìm thấy record"; return "$s"; }
   run install -o named -g named -m 0640 "$temporary" "$file"; rm -f "$temporary"

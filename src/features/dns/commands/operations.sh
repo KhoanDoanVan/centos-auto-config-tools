@@ -46,7 +46,7 @@ dns_forwarders_set() {
 }
 
 dns_query() {
-  require_args 1 "$#" 'netadmin dns query <name> [server]'; require_command dig
+  require_args 1 "$#" 'netadmin dns query <name> [server]'; require_command_after_install dig 'netadmin dns install'
   if [[ -n "${2:-}" ]]; then assert_ipv4 "$2"; dig "@$2" "$1"; else dig "$1"; fi
 }
 

@@ -25,7 +25,7 @@ mail_config_command() {
   postfix_config="$(mail_postfix_config)"; dovecot_config="$(mail_dovecot_config)"
   case "$action" in
     show)
-      require_command postconf
+      require_command_after_install postconf 'netadmin mail install'
       postconf -n
       printf '\n### Dovecot\n'
       [[ -r "$dovecot_config" ]] && cat "$dovecot_config" || true

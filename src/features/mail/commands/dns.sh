@@ -28,7 +28,7 @@ mail_dns_setup() {
 
 mail_dns_check() {
   local domain="${1%.}" server="${2:-}" query_args=()
-  assert_domain "$domain"; require_command dig
+  assert_domain "$domain"; require_command_after_install dig 'netadmin mail install'
   if [[ -n "$server" ]]; then assert_ipv4 "$server"; query_args+=("@$server"); fi
   dig "${query_args[@]}" "$domain" MX
 }

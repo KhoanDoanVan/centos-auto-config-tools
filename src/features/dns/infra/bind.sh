@@ -33,12 +33,12 @@ dns_remove_zone_block() {
 }
 
 dns_check() {
-  require_command named-checkconf
+  require_command_after_install named-checkconf 'netadmin dns install'
   run named-checkconf "$(dns_config_path)"
 }
 
 dns_zone_check() {
-  require_command named-checkzone
+  require_command_after_install named-checkzone 'netadmin dns install'
   run named-checkzone "$1" "$(dns_zone_file "$1")"
 }
 

@@ -3,6 +3,12 @@
 mail_install() {
   require_root
   install_packages postfix dovecot s-nail nmap-ncat bind bind-utils policycoreutils
+  if ! is_dry_run; then
+    require_command_after_install postfix 'netadmin mail install'
+    require_command_after_install postconf 'netadmin mail install'
+    require_command_after_install doveconf 'netadmin mail install'
+    require_command_after_install named-checkconf 'netadmin mail install'
+  fi
   service_action postfix enable
   service_action dovecot enable
   firewall_add_service smtp

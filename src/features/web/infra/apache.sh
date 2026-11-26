@@ -6,7 +6,7 @@ web_domain_key() { printf '%s' "$1" | tr '.:/' '---'; }
 web_site_config() { printf '%s/netadmin-%s.conf\n' "$(web_config_dir)" "$(web_domain_key "$1")"; }
 
 web_check() {
-  require_command apachectl
+  require_command_after_install apachectl 'netadmin web install'
   run apachectl configtest
 }
 

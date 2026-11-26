@@ -30,6 +30,12 @@ is_rhel_family() {
 command_exists() { command -v "$1" >/dev/null 2>&1; }
 require_command() { command_exists "$1" || die "Thiếu command: $1"; }
 
+require_command_after_install() {
+  local command="$1" install_step="$2"
+  command_exists "$command" || \
+    die "Thiếu command '$command'. Hãy tắt Dry run và chạy '$install_step' trước, sau đó thử lại."
+}
+
 package_manager() {
   if command_exists dnf; then printf '%s\n' dnf
   elif command_exists yum; then printf '%s\n' yum

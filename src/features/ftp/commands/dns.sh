@@ -24,7 +24,7 @@ ftp_dns_setup() {
 
 ftp_dns_check() {
   local fqdn="${1%.}" server="${2:-}" args=()
-  assert_hostname "$fqdn"; require_command dig
+  assert_hostname "$fqdn"; require_command_after_install dig 'netadmin ftp install'
   if [[ -n "$server" ]]; then assert_ipv4 "$server"; args+=("@$server"); fi
   dig "${args[@]}" "$fqdn" A
 }

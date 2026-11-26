@@ -4,7 +4,9 @@ mail_postfix_config() { system_path "${MAIL_POSTFIX_CONFIG:-/etc/postfix/main.cf
 mail_dovecot_config() { system_path "${MAIL_DOVECOT_CONFIG:-/etc/dovecot/conf.d/99-netadmin.conf}"; }
 
 mail_check() {
-  require_command postfix; require_command doveconf
+  require_command_after_install postfix 'netadmin mail install'
+  require_command_after_install postconf 'netadmin mail install'
+  require_command_after_install doveconf 'netadmin mail install'
   run postfix check
   run doveconf -c "$(system_path /etc/dovecot/dovecot.conf)" -n >/dev/null
 }

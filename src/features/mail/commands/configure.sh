@@ -7,7 +7,7 @@ mail_configure() {
   local domain="$1" fqdn="$2" network="$3" postfix_config dovecot_config postfix_backup dovecot_backup=''
   assert_domain "$domain"; assert_hostname "$fqdn"; assert_cidr "$network"
   [[ "$fqdn" == *".$domain" || "$fqdn" == "$domain" ]] || die "FQDN phải thuộc domain $domain"
-  require_command postconf
+  require_command_after_install postconf 'netadmin mail install'
   postfix_config="$(mail_postfix_config)"; dovecot_config="$(mail_dovecot_config)"
   [[ -e "$postfix_config" ]] || die "Không tìm thấy Postfix config: $postfix_config"
   postfix_backup="$(backup_file "$postfix_config" mail)"

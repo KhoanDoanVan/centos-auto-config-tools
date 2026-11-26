@@ -25,7 +25,10 @@ samba_remove_share_block() {
   run install -m 0644 "$temporary" "$config"; rm -f "$temporary"
 }
 
-samba_check() { require_command testparm; run testparm -s "$(samba_config_path)" >/dev/null; }
+samba_check() {
+  require_command_after_install testparm 'netadmin samba install'
+  run testparm -s "$(samba_config_path)" >/dev/null
+}
 
 samba_prepare_selinux_path() {
   selinux_set_file_context "$1" samba_share_t
