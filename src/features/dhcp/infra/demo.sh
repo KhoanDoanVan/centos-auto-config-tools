@@ -8,10 +8,6 @@ dhcp_isc_unsupported() {
   [[ "$major" =~ ^[0-9]+$ ]] && (( major >= 10 ))
 }
 
-dhcp_demo_finish() {
-  printf '\n[DRY-RUN] Dữ liệu mô phỏng DHCP trên CentOS 10; hệ thống chưa được thay đổi.\n'
-}
-
 dhcp_demo_scope() {
   local action="${1:-list}"; shift || true
   case "$action" in
@@ -120,5 +116,4 @@ dhcp_demo_command() {
       ;;
     *) die "DHCP demo command không hỗ trợ: $command" ;;
   esac
-  dhcp_demo_finish
 }

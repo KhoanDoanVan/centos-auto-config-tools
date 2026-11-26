@@ -28,7 +28,7 @@ app_dispatch() {
   shift || true
   case "$command" in
     help|-h|--help) print_root_help ;;
-    version|--version) printf '%s\n' 'netadmin 1.2.3' ;;
+    version|--version) printf '%s\n' 'netadmin 1.2.4' ;;
     *) dispatch_command "$command" "$@" ;;
   esac
 }

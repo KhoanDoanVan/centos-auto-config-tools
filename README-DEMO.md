@@ -2,7 +2,7 @@
 
 Tài liệu này là kịch bản trình bày ngắn gọn, bám sát mã nguồn và giao diện hiện tại của dự án. Môi trường demo đang được giả định là **CentOS Stream 10 + Cockpit**.
 
-> Lưu ý quan trọng: CentOS Stream 10 không còn ISC DHCP. Module cho phép xem luồng và dữ liệu mẫu khi Dry run bật, đồng thời ghi rõ đây là dữ liệu mô phỏng. Thực thi DHCP thật vẫn cần hệ RHEL 9 hoặc một backend Kea mới.
+> Lưu ý quan trọng: CentOS Stream 10 không còn ISC DHCP. Module cho phép xem luồng và dữ liệu mẫu khi Dry run bật. Trạng thái Dry run được thể hiện trên công tắc, command preview và trạng thái thực thi của UI. Thực thi DHCP thật vẫn cần hệ RHEL 9 hoặc một backend Kea mới.
 
 ## 1. Mục tiêu và phân bổ thời gian
 
@@ -241,11 +241,7 @@ Tuyệt đối không tắt Dry run và không xác nhận `/dev/sda`, `/dev/nvm
 
 ### Tùy chọn khi được hỏi về DHCP — tối đa 1 phút
 
-Giữ Dry run bật, chọn lần lượt **DHCP → Liệt kê DHCP scopes**, **Liệt kê reservations** hoặc **Liệt kê DHCP leases**. Output sử dụng một bộ dữ liệu mẫu nhất quán và dòng cuối ghi rõ:
-
-```text
-[DRY-RUN] Dữ liệu mô phỏng DHCP trên CentOS 10; hệ thống chưa được thay đổi.
-```
+Giữ Dry run bật, chọn lần lượt **DHCP → Liệt kê DHCP scopes**, **Liệt kê reservations** hoặc **Liệt kê DHCP leases**. Output sử dụng một bộ dữ liệu mẫu nhất quán. Trước khi chạy, chỉ rõ công tắc Dry run và command preview có `NETADMIN_DRY_RUN=1`; sau khi chạy, UI hiển thị trạng thái “Dry run — chưa thực thi”.
 
 **Nói:**
 
