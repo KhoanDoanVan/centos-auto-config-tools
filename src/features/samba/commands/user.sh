@@ -8,7 +8,13 @@ samba_user_command() {
       assert_identifier "$1"; assert_identifier "$2"
       getent group "$2" >/dev/null || run groupadd "$2"
       id "$1" >/dev/null 2>&1 || run useradd -M -s /sbin/nologin -G "$2" "$1"
-      run usermod -aG "$2" "$1"; run smbpasswd -a "$1"
+      run usermod -aG "$2" "$1"
+      if is_dry_run; then
+        run smbpasswd -s -a "$1"
+      else
+        require_command_after_install smbpasswd 'netadmin samba install'
+        if [[ -t 0 ]]; then smbpasswd -a "$1"; else smbpasswd -s -a "$1"; fi
+      fi
       log_ok "Đã thêm Samba user: $1"
       ;;
     remove)

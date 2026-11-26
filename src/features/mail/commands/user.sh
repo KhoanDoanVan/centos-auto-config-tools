@@ -16,7 +16,7 @@ mail_user_add() {
   [[ -z "${NETADMIN_ROOT:-}" ]] || die "Không hỗ trợ tạo user bên trong NETADMIN_ROOT."
   getent passwd "$username" >/dev/null && die "User đã tồn tại: $username"
   run useradd -m "$username"
-  if [[ "${NETADMIN_DRY_RUN:-0}" != 1 ]]; then passwd "$username"; else log_info "Sẽ yêu cầu đặt mật khẩu cho $username"; fi
+  set_local_user_password_from_stdin "$username"
   home="$(getent passwd "$username" 2>/dev/null | cut -d: -f6)"
   group="$(id -gn "$username" 2>/dev/null || true)"
   if [[ -n "$home" && -n "$group" ]]; then

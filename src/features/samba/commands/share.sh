@@ -14,12 +14,20 @@ samba_share_command() {
 samba_share_add() {
   local kind="$1"; shift
   local required=2 usage group='' mode config writable backup
-  [[ "$kind" == group ]] && required=3
-  usage="netadmin samba share add-$kind <name> <path>$([[ "$kind" == group ]] && echo ' <group>') [read-only|read-write]"
+  if [[ "$kind" == group ]]; then
+    required=3
+    usage='netadmin samba share add-group <name> <path> <group> [read-only|read-write]'
+  else
+    usage='netadmin samba share add-public <name> <path> [read-only|read-write]'
+  fi
   require_args "$required" "$#" "$usage"; require_root
   local name="$1" path="$2"; shift 2
   assert_identifier "$name"; assert_abs_path "$path"
-  if [[ "$kind" == group ]]; then group="$1"; shift; getent group "$group" >/dev/null || die "Group không tồn tại: $group"; fi
+  if [[ "$kind" == group ]]; then
+    group="$1"; shift
+    getent group "$group" >/dev/null || \
+      die "Group '$group' chưa tồn tại. Hãy chạy 'netadmin samba user add <username> $group' trước để tạo group và user."
+  fi
   mode="${1:-read-write}"; [[ "$mode" == read-only || "$mode" == read-write ]] || die "Mode chỉ nhận read-only/read-write"
   writable=$([[ "$mode" == read-write ]] && echo yes || echo no)
   samba_ensure_config; config="$(samba_config_path)"

@@ -175,6 +175,8 @@ Không nói “Doctor đã kiểm tra đầy đủ mọi package của 123 tool�
 
 > Công cụ đọc trực tiếp connection của NetworkManager. Tên connection và interface có thể khác nhau, vì vậy dự án không hard-code `enp2s0` cho mọi máy. Người dùng phải lấy đúng tên ở bước này trước khi đặt IP tĩnh hoặc thay đổi DHCP client.
 
+Tool hiện chấp nhận cả tên connection profile và tên interface. Nếu nhập interface như `enp26s0`, CLI sẽ tự ánh xạ sang profile đang hoạt động, ví dụ `netadmin-lab`.
+
 **Kết quả cần chỉ:** connection đang hoạt động và interface tương ứng.
 
 ### Bước 4. Kiểm tra BIND và danh sách zone — 1 phút 15 giây
@@ -362,4 +364,3 @@ Record luôn thuộc một zone. Với zone `lab.local`, NetAdmin tạo file `/v
 - [Hướng dẫn Cockpit](docs/QUICKSTART-COCKPIT-UI.md)
 - [Danh sách tool](docs/TOOLS-LIST.md)
 - [Red Hat: Kea thay thế ISC DHCP trong RHEL 10](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/10/html/considerations_in_adopting_rhel_10/infrastructure-services)
-

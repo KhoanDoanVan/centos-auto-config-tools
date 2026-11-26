@@ -29,11 +29,7 @@ ftp_user_add() {
   actual_home="$(system_path "$home")"
   [[ -z "${NETADMIN_ROOT:-}" ]] || die "Không hỗ trợ tạo user bên trong NETADMIN_ROOT."
   run useradd -m -d "$home" -s /sbin/nologin "$username"
-  if [[ "${NETADMIN_DRY_RUN:-0}" != 1 ]]; then
-    passwd "$username"
-  else
-    log_info "Sẽ yêu cầu đặt mật khẩu cho $username"
-  fi
+  set_local_user_password_from_stdin "$username"
   run chmod 0750 "$actual_home"
   ftp_prepare_selinux_path "$actual_home"
   log_ok "Đã tạo local FTP user: $username"

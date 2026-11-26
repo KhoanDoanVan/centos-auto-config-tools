@@ -36,6 +36,26 @@ require_command_after_install() {
     die "Thiếu command '$command'. Hãy tắt Dry run và chạy '$install_step' trước, sau đó thử lại."
 }
 
+set_local_user_password_from_stdin() {
+  local username="$1" password confirmation
+  if is_dry_run; then
+    log_info "Sẽ đặt mật khẩu cho user $username qua stdin."
+    return 0
+  fi
+  if [[ -t 0 ]]; then
+    require_command passwd
+    passwd "$username"
+    return
+  fi
+  require_command chpasswd
+  IFS= read -r password || die "Không nhận được mật khẩu cho user $username."
+  IFS= read -r confirmation || die "Thiếu lần xác nhận mật khẩu cho user $username."
+  [[ -n "$password" ]] || die "Mật khẩu không được để trống."
+  [[ "$password" == "$confirmation" ]] || die "Hai lần nhập mật khẩu không khớp."
+  printf '%s:%s\n' "$username" "$password" | chpasswd
+  unset password confirmation
+}
+
 package_manager() {
   if command_exists dnf; then printf '%s\n' dnf
   elif command_exists yum; then printf '%s\n' yum
