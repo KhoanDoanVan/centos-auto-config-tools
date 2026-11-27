@@ -1,7 +1,5 @@
 # Tài liệu NetAdmin Toolkit
 
-Kịch bản trình bày và checklist trước buổi demo: [README demo 13–15 phút](../README-DEMO.md).
-
 Thư mục này có hai tầng tài liệu:
 
 - **Giáo trình từ cơ bản:** dành cho người chưa có kiến thức network/Linux domain.
@@ -23,7 +21,7 @@ Thư mục này có hai tầng tài liệu:
 10. [Setup và chạy giao diện NetAdmin trên CentOS](SETUP-VA-CHAY-GIAO-DIEN.md)
 11. [Quick start Cockpit UI](QUICKSTART-COCKPIT-UI.md)
 12. [Web, FTP và Mail Server từ cơ bản](handbook/10-WEB-FTP-MAIL-TU-CO-BAN.md)
-13. [Đối chiếu AutoScript với CLI và Cockpit UI](TOOL-COVERAGE-AUDIT.md)
+13. [Phạm vi tính năng và mức độ kiểm chứng](TOOL-COVERAGE-AUDIT.md)
 14. [Chạy audit và xem UI trên Ubuntu](TEST-TREN-UBUNTU.md)
 
 ## Tra nhanh từng nhóm tool
@@ -66,7 +64,7 @@ Thư mục này có hai tầng tài liệu:
 | [SYSTEM_TOOLS.md](SYSTEM_TOOLS.md) | Package, command hệ thống, service và file cấu hình được sử dụng |
 | [SETUP-VA-CHAY-GIAO-DIEN.md](SETUP-VA-CHAY-GIAO-DIEN.md) | Hướng dẫn copy-paste để cài và chạy giao diện Cockpit trên CentOS |
 | [QUICKSTART-COCKPIT-UI.md](QUICKSTART-COCKPIT-UI.md) | Hướng dẫn ngắn để cài, mở và chạy tool thật từ giao diện |
-| [TOOL-COVERAGE-AUDIT.md](TOOL-COVERAGE-AUDIT.md) | Bảng kiểm toàn bộ nhóm tính năng trong tài liệu AutoScript với CLI/UI hiện có |
+| [TOOL-COVERAGE-AUDIT.md](TOOL-COVERAGE-AUDIT.md) | Phạm vi CLI/UI hiện có và mức độ đã kiểm chứng |
 | [TEST-TREN-UBUNTU.md](TEST-TREN-UBUNTU.md) | Cách chạy audit tĩnh và xem UI trên Ubuntu mà không coi đó là nghiệm thu CentOS |
 
 Đọc nhanh:

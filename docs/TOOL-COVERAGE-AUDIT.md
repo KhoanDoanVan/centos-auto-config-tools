@@ -1,16 +1,12 @@
-# Đối chiếu AutoScript với NetAdmin Toolkit
+# Phạm vi và mức độ kiểm chứng NetAdmin Toolkit
 
-Ngày audit gần nhất: 26/11/2026.
+Ngày audit gần nhất: 27/11/2026.
 
-Nguồn đối chiếu:
-
-- `AUTOSCRIPT tổng hợp.md`: DHCP, DNS, Storage và Samba.
-- `AUTOSCRIPT tổng hợp(2).md`: Web, FTP và Mail.
-- Mã Bash trong `src/features/` và danh mục Cockpit trong `site/dist/app.js`.
+Phạm vi được đối chiếu trực tiếp từ mã Bash trong `src/features/` và catalog Cockpit trong `site/dist/app.js`. Tài liệu yêu cầu thô đã được loại khỏi repository public sau khi hoàn tất chuẩn hóa.
 
 ## Kết luận
 
-- Các chức năng có mô tả đủ rõ trong hai tài liệu đã có CLI Bash tương ứng.
+- Các chức năng trong phạm vi công bố có CLI Bash tương ứng.
 - 123 thao tác được đưa lên Cockpit UI: Doctor 1, DNS 20, DHCP 14, Samba 18, Web 14, FTP 25, Mail 15 và Storage 16.
 - `scripts/audit-static.sh` đã xác nhận cú pháp Bash/JavaScript, toàn bộ module dispatch, 123 route UI/CLI, placeholder/field và đường dẫn Cockpit runtime.
 - Kết quả này **không đồng nghĩa 123 thao tác đã được nghiệm thu trên dịch vụ thật**. Các lệnh thay đổi package, service, firewall, SELinux, user, disk và tệp cấu hình phải chạy trên máy lab Linux phù hợp.
