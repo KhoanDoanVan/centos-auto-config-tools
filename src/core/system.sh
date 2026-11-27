@@ -73,8 +73,27 @@ service_action() {
   local service="$1" action="$2"
   require_root; require_command systemctl
   case "$action" in
-    start|stop|restart|reload|status|enable|disable) run systemctl "$action" "$service" ;;
-    enable-now) run systemctl enable --now "$service" ;;
+    status) run systemctl status "$service" --no-pager ;;
+    start|stop|restart|reload|enable|disable)
+      if is_dry_run; then
+        run systemctl "$action" "$service"
+      elif ! systemctl "$action" "$service"; then
+        log_error "Không thể chạy: systemctl $action $service"
+        systemctl status "$service" --no-pager -l >&2 || true
+        command_exists journalctl && journalctl -u "$service" -n 30 --no-pager >&2 || true
+        die "Dịch vụ $service thất bại; xem phần status/journal ngay phía trên."
+      fi
+      ;;
+    enable-now)
+      if is_dry_run; then
+        run systemctl enable --now "$service"
+      elif ! systemctl enable --now "$service"; then
+        log_error "Không thể enable/start service: $service"
+        systemctl status "$service" --no-pager -l >&2 || true
+        command_exists journalctl && journalctl -u "$service" -n 30 --no-pager >&2 || true
+        die "Dịch vụ $service thất bại; xem phần status/journal ngay phía trên."
+      fi
+      ;;
     *) die "Service action không hỗ trợ: $action" ;;
   esac
 }
